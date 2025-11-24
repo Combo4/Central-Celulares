@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Instagram",
+    "url": "https://instagram.com/centralcelulares",
+    "icon": "instagram",
+    "enabled": true
+  },
+  {
+    "name": "Facebook",
+    "url": "https://facebook.com/centralcelulares",
+    "icon": "facebook",
+    "enabled": true
+  },
+  {
+    "name": "WhatsApp",
+    "url": "https://wa.me/595XXXXXXXXX",
+    "icon": "whatsapp",
+    "enabled": true
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "pagination": {
+    "itemsPerPage": 12
+  },
+  "layout": {
+    "columnsPerRow": 4
+  },
+  "site": {
+    "name": "Central Celulares",
+    "currency": "PYG",
+    "locale": "es-PY"
+  },
+  "search": {
+    "minCharacters": 2,
+    "debounceTime": 300
+  },
+  "display": {
+    "showOldPrices": true,
+    "showStockBadge": false,
+    "productImagePlaceholder": "📱"
+  },
+  "socials": {
+    "showInFooter": true
+  }
+}

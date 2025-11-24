@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central Celulares - Catálogo</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <p>Bienvenidos a Central Celulares</p>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-box">
+                <img src="assets/images/logo.png" alt="Central Celulares" class="logo-image">
+        </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-link active">Inicio</a>
+                <a href="#" class="nav-link">Productos</a>
+                <a href="#" class="nav-link">Servicios</a>
+                <a href="#" class="nav-link">Nosotros</a>
+                <a href="#" class="nav-link">Contacto</a>
+            </nav>
+
+            <div class="header-actions">
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar productos..." class="search-input">
+                    <button class="search-button">🔍</button>
+                </div>
+                <button class="cta-button" id="contact-btn">CONTACTAR</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <h1 class="page-title">Celulares</h1>
+
+            <!-- Filters and Sort -->
+            <div class="controls">
+                <select class="sort-select">
+                    <option value="">Ordenar por...</option>
+                    <option value="price-asc">Precio menor a mayor</option>
+                    <option value="price-desc">Precio mayor a menor</option>
+                    <option value="newest">Más recientes</option>
+                </select>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="product-grid" id="product-grid">
+                <!-- Products loaded dynamically from products.json -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="page-btn" disabled>«</button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">»</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="footer-contact">
+        <div class="footer-content">
+            <div class="social-links" id="social-links">
+                <!-- Social links loaded dynamically from socials.json -->
+            </div>
+            <div class="footer-info">
+                <p>© Todos los derechos reservados @centralcelulares</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load products dynamically -->
+    <script src="assets/js/products.js"></script>
+</body>
+</html>

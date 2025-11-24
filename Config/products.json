@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "name": "iPhone 13 128GB",
+    "price": 4449603,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 13 128GB.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 2,
+    "name": "iPhone 14 128GB",
+    "price": 1102000,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 14 128GB.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 3,
+    "name": "iPhone 15 128GB",
+    "price": 7803425,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 15 128GB.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 4,
+    "name": "iPhone 16 128GB",
+    "price": 3639265,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 16 128GB.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 5,
+    "name": "iPhone 16 Pro 128GB",
+    "price": 4059181,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 16 Pro 128GB.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 6,
+    "name": "iPhone 16 Pro 128GB",
+    "price": 5500000,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 16 Pro 128GB.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 7,
+    "name": "iPhone 16 Pro Max 1T",
+    "price": 2800000,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 16 Pro Max 1T.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 8,
+    "name": "iPhone 16E 128Gb",
+    "price": 3200000,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 16E 128Gb.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 9,
+    "name": "iPhone 16E 128Gb",
+    "price": 3200000,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 16E 128Gb.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 10,
+    "name": "iPhone 16E 128Gb",
+    "price": 3200000,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 16E 128Gb.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 11,
+    "name": "iPhone 16E 128Gb",
+    "price": 3200000,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 16E 128Gb.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 12,
+    "name": "iPhone 16E 128Gb",
+    "price": 3200000,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 16E 128Gb.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 13,
+    "name": "iPhone 16E 128Gb",
+    "price": 3200000,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 16E 128Gb.png",
+    "inStock": true,
+    "category": "iPhone"
+  },
+  {
+    "id": 14,
+    "name": "iPhone 16E 128Gb",
+    "price": 3200000,
+    "oldPrice": null,
+    "image": "assets/images/products/iPhone 16E 128Gb.png",
+    "inStock": true,
+    "category": "iPhone"
+  }
+]
