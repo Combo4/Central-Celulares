@@ -32,7 +32,24 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 14 128GB.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.1 pulgadas, 2532 x 1170 píxeles de resolución",
+      "Memoria: 128GB de almacenamiento interno, 6GB de RAM",
+      "Cámaras: Trasera de 12MP + 12MP, Frontal de 12MP",
+      "Conectividad: Wi-Fi 6, Bluetooth 5.3, NFC",
+      "Métodos de desbloqueo: Reconocimiento facial Face ID",
+      "Marca: Apple",
+      "Línea: iPhone",
+      "Modelo: 14",
+      "Color: Varios colores disponibles",
+      "Tipo de SIM: Doble SIM (nano-SIM y eSIM)",
+      "Sistema operativo: iOS 16",
+      "Compatibilidad con tarjetas de memoria: No compatible con tarjetas SD"
+    ]
   },
   {
     "id": 3,
@@ -41,7 +58,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 15 128GB.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.1 pulgadas Super Retina XDR",
+      "Memoria: 128GB de almacenamiento, 6GB de RAM",
+      "Cámaras: Trasera 48MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 15",
+      "Sistema operativo: iOS 17"
+    ]
   },
   {
     "id": 4,
@@ -50,7 +78,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 16 128GB.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.1 pulgadas Super Retina XDR",
+      "Memoria: 128GB de almacenamiento, 8GB de RAM",
+      "Cámaras: Trasera 48MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 16",
+      "Sistema operativo: iOS 18"
+    ]
   },
   {
     "id": 5,
@@ -59,7 +98,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 16 Pro 128GB.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.3 pulgadas ProMotion 120Hz",
+      "Memoria: 128GB de almacenamiento, 8GB de RAM",
+      "Cámaras: Trasera 48MP + 12MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 16 Pro",
+      "Sistema operativo: iOS 18"
+    ]
   },
   {
     "id": 6,
@@ -68,7 +118,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 16 Pro 128GB.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.3 pulgadas ProMotion 120Hz",
+      "Memoria: 128GB de almacenamiento, 8GB de RAM",
+      "Cámaras: Trasera 48MP + 12MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 16 Pro",
+      "Sistema operativo: iOS 18"
+    ]
   },
   {
     "id": 7,
@@ -77,7 +138,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 16 Pro Max 1T.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.9 pulgadas ProMotion 120Hz",
+      "Memoria: 1TB de almacenamiento, 8GB de RAM",
+      "Cámaras: Trasera 48MP + 12MP + 12MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 16 Pro Max",
+      "Sistema operativo: iOS 18"
+    ]
   },
   {
     "id": 8,
@@ -86,7 +158,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 16E 128Gb.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.1 pulgadas Liquid Retina",
+      "Memoria: 128GB de almacenamiento, 6GB de RAM",
+      "Cámaras: Trasera 12MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 16E",
+      "Sistema operativo: iOS 18"
+    ]
   },
   {
     "id": 9,
@@ -95,7 +178,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 16E 128Gb.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.1 pulgadas Liquid Retina",
+      "Memoria: 128GB de almacenamiento, 6GB de RAM",
+      "Cámaras: Trasera 12MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 16E",
+      "Sistema operativo: iOS 18"
+    ]
   },
   {
     "id": 10,
@@ -104,7 +198,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 16E 128Gb.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.1 pulgadas Liquid Retina",
+      "Memoria: 128GB de almacenamiento, 6GB de RAM",
+      "Cámaras: Trasera 12MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 16E",
+      "Sistema operativo: iOS 18"
+    ]
   },
   {
     "id": 11,
@@ -113,7 +218,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 16E 128Gb.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.1 pulgadas Liquid Retina",
+      "Memoria: 128GB de almacenamiento, 6GB de RAM",
+      "Cámaras: Trasera 12MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 16E",
+      "Sistema operativo: iOS 18"
+    ]
   },
   {
     "id": 12,
@@ -122,7 +238,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 16E 128Gb.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.1 pulgadas Liquid Retina",
+      "Memoria: 128GB de almacenamiento, 6GB de RAM",
+      "Cámaras: Trasera 12MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 16E",
+      "Sistema operativo: iOS 18"
+    ]
   },
   {
     "id": 13,
@@ -131,7 +258,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 16E 128Gb.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.1 pulgadas Liquid Retina",
+      "Memoria: 128GB de almacenamiento, 6GB de RAM",
+      "Cámaras: Trasera 12MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 16E",
+      "Sistema operativo: iOS 18"
+    ]
   },
   {
     "id": 14,
@@ -140,7 +278,18 @@
     "oldPrice": null,
     "image": "assets/images/products/iPhone 16E 128Gb.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.1 pulgadas Liquid Retina",
+      "Memoria: 128GB de almacenamiento, 6GB de RAM",
+      "Cámaras: Trasera 12MP + 12MP, Frontal 12MP",
+      "Marca: Apple",
+      "Modelo: 16E",
+      "Sistema operativo: iOS 18"
+    ]
   },
   {
     "id": 15,
@@ -172,6 +321,14 @@
     "category": "Samsung",
     "badges": [
       {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.4 pulgadas Super AMOLED, 120Hz",
+      "Memoria: 128GB de almacenamiento, 6GB de RAM",
+      "Cámaras: Trasera 50MP + 12MP + 5MP, Frontal 32MP",
+      "Procesador: Exynos 1380",
+      "Batería: 5000 mAh con carga rápida de 25W",
+      "Sistema operativo: Android 13 con One UI 5.1"
     ]
   },
   {
@@ -204,6 +361,14 @@
     "category": "Xiaomi",
     "badges": [
       {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.67 pulgadas AMOLED, 120Hz",
+      "Memoria: 512GB de almacenamiento, 12GB de RAM",
+      "Cámara: 64MP principal + 8MP ultra gran angular + 2MP macro",
+      "Procesador: Dimensity 8300-Ultra",
+      "Batería: 5000 mAh con carga rápida de 67W",
+      "Sistema operativo: Android 14 con HyperOS"
     ]
   }
 ]
