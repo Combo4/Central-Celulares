@@ -11,11 +11,6 @@
       {"type": "stock", "text": "En Stock"},
       {"type": "shipping", "text": "Envío Gratis ⚡"}
     ],
-    "installments": [
-      {"months": 3, "amount": 1483201},
-      {"months": 6, "amount": 741600},
-      {"months": 12, "amount": 370800}
-    ],
     "specifications": [
       "Pantalla: 6.1 pulgadas, 2532 x 1170 píxeles de resolución",
       "Memoria: 128GB de almacenamiento interno, 4GB de RAM",

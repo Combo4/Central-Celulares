@@ -53,9 +53,6 @@ function displayProductDetails(product) {
     // Display pricing
     displayPricing(product);
     
-    // Display installments
-    displayInstallments(product);
-    
     // Display specifications
     displaySpecifications(product);
     
@@ -122,33 +119,6 @@ function displayPricing(product) {
     priceRow.appendChild(priceLabel);
     priceRow.appendChild(priceGroup);
     priceSection.appendChild(priceRow);
-}
-
-// Display installments
-function displayInstallments(product) {
-    const installmentsSection = document.getElementById('installments-section');
-    installmentsSection.innerHTML = '';
-    
-    if (!product.installments || product.installments.length === 0) {
-        return;
-    }
-    
-    product.installments.forEach(installment => {
-        const card = document.createElement('div');
-        card.className = 'installment-card';
-        
-        const title = document.createElement('span');
-        title.className = 'installment-title';
-        title.textContent = `${installment.months} cuotas de`;
-        
-        const price = document.createElement('span');
-        price.className = 'installment-price';
-        price.textContent = `${installment.amount.toLocaleString('es-PY')} PYG`;
-        
-        card.appendChild(title);
-        card.appendChild(price);
-        installmentsSection.appendChild(card);
-    });
 }
 
 // Display specifications
