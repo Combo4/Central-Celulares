@@ -159,6 +159,14 @@
 }
 
 .btn-whatsapp {
+    width: 100%;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
     background: #25D366;
     color: white;
 }
@@ -167,11 +175,6 @@
     background: #1fb855;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-}
-
-.btn-whatsapp svg {
-    width: 20px;
-    height: 20px;
 }
 
 /* Product Description/Specs */

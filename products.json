@@ -8,8 +8,7 @@
     "inStock": true,
     "category": "iPhone",
     "badges": [
-      {"type": "stock", "text": "En Stock"},
-      {"type": "shipping", "text": "Envío Gratis ⚡"}
+      {"type": "stock", "text": "En Stock"}
     ],
     "specifications": [
       "Pantalla: 6.1 pulgadas, 2532 x 1170 píxeles de resolución",
