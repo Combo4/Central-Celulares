@@ -55,9 +55,9 @@ body {
 }
 
 .logo-image {
-    height: 80px;
+    height: 100px;
     width: auto;
-    max-width: 200px;
+    max-width: 250px;
     object-fit: contain;
     display: block;
 }
@@ -347,7 +347,7 @@ body {
 .product-price {
     font-size: 18px;
     font-weight: 700;
-    color: var(--secondary-color);
+    color: var(--primary-color);
 }
 
 /* Pagination */

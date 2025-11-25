@@ -1,0 +1,9 @@
+/* Blue-Green Theme */
+:root {
+  --primary-color: #0D7377;
+  --primary-hover: #0A5C5F;
+  --secondary-color: #14FFEC;
+  --secondary-hover: #0DD9C7;
+  --header-bg: #231F20;
+  --text-dark: #2D2D2D;
+}

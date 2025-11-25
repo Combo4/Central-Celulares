@@ -150,7 +150,7 @@
 }
 
 .product-price.offer-price {
-    color: var(--secondary-color);
+    color: var(--primary-color);
 }
 
 /* Product Actions */

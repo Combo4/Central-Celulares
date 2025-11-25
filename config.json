@@ -43,6 +43,18 @@
         "label": "Green-Blue",
         "primary": "#009688",
         "secondary": "#00695C"
+      },
+      {
+        "name": "greenblue",
+        "label": "Green-Blue",
+        "primary": "#007e60",
+        "secondary": "#0434b2"
+      },
+      {
+        "name": "bluegreen",
+        "label": "Blue-Green",
+        "primary": "#0434b2",
+        "secondary": "#007e60"
       }
     ]
   },
