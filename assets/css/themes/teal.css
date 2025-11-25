@@ -1,0 +1,9 @@
+/* Teal Theme (Green-Blue) */
+:root {
+  --primary-color: #009688;
+  --primary-hover: #00796B;
+  --secondary-color: #00695C;
+  --secondary-hover: #004D40;
+  --header-bg: #231F20;
+  --text-dark: #2D2D2D;
+}

@@ -1,0 +1,9 @@
+/* Cyan Theme (Default) */
+:root {
+  --primary-color: #00BCD4;
+  --primary-hover: #00A8B8;
+  --secondary-color: #27AE60;
+  --secondary-hover: #1E8449;
+  --header-bg: #231F20;
+  --text-dark: #2D2D2D;
+}

@@ -1,0 +1,9 @@
+/* Green Theme */
+:root {
+  --primary-color: #27AE60;
+  --primary-hover: #1E8449;
+  --secondary-color: #229954;
+  --secondary-hover: #1D7A42;
+  --header-bg: #231F20;
+  --text-dark: #2D2D2D;
+}

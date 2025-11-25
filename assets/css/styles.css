@@ -14,7 +14,7 @@ body {
 
 /* Top Bar */
 .top-bar {
-    background: #00BCD4;
+    background: var(--primary-color);
     color: white;
     text-align: center;
     padding: 10px;
@@ -169,7 +169,7 @@ body {
 }
 
 .dropdown-item:hover {
-    background: #00BCD4;
+    background: var(--primary-color);
     color: #FFFFFF;
 }
 
@@ -204,7 +204,7 @@ body {
 }
 
 .cta-button {
-    background: #00BCD4;
+    background: var(--primary-color);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -216,7 +216,7 @@ body {
 }
 
 .cta-button:hover {
-    background: #00A8B8;
+    background: var(--primary-hover);
 }
 
 /* Main Content */
@@ -245,10 +245,10 @@ body {
 
 .sort-select {
     padding: 8px 16px;
-    border: 2px solid #00BCD4;
+    border: 2px solid var(--primary-color);
     border-radius: 6px;
     background: #F8F9FA;
-    color: #00BCD4;
+    color: var(--primary-color);
     font-size: 15px;
     cursor: pointer;
     outline: none;
@@ -297,7 +297,7 @@ body {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: #27AE60;
+    background: var(--secondary-color);
     color: white;
     padding: 4px 10px;
     border-radius: 4px;
@@ -347,7 +347,7 @@ body {
 .product-price {
     font-size: 18px;
     font-weight: 700;
-    color: #27AE60;
+    color: var(--secondary-color);
 }
 
 /* Pagination */
@@ -360,9 +360,9 @@ body {
 
 .page-btn {
     padding: 8px 14px;
-    border: 2px solid #00BCD4;
+    border: 2px solid var(--primary-color);
     background: white;
-    color: #00BCD4;
+    color: var(--primary-color);
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
@@ -370,12 +370,12 @@ body {
 }
 
 .page-btn:hover:not(:disabled) {
-    background: #00BCD4;
+    background: var(--primary-color);
     color: white;
 }
 
 .page-btn.active {
-    background: #00BCD4;
+    background: var(--primary-color);
     color: white;
 }
 
@@ -420,8 +420,8 @@ body {
 }
 
 .social-link:hover {
-    color: #00BCD4;
-    border-color: #00BCD4;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 188, 212, 0.15);
 }

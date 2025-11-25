@@ -23,6 +23,29 @@
   "socials": {
     "showInFooter": true
   },
+  "theme": {
+    "current": "green",
+    "available": [
+      {
+        "name": "cyan",
+        "label": "Cyan (Default)",
+        "primary": "#00BCD4",
+        "secondary": "#27AE60"
+      },
+      {
+        "name": "green",
+        "label": "Green",
+        "primary": "#27AE60",
+        "secondary": "#1E8449"
+      },
+      {
+        "name": "teal",
+        "label": "Green-Blue",
+        "primary": "#009688",
+        "secondary": "#00695C"
+      }
+    ]
+  },
   "navigation": {
     "items": [
       {
