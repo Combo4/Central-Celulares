@@ -1,6 +1,7 @@
 {
   "pagination": {
-    "itemsPerPage": 12
+    "itemsPerPage": 8
+    
   },
   "layout": {
     "columnsPerRow": 4

@@ -3,10 +3,33 @@
     "id": 1,
     "name": "iPhone 13 128GB",
     "price": 4449603,
-    "oldPrice": null,
+    "oldPrice": 4700000,
     "image": "assets/images/products/iPhone 13 128GB.png",
     "inStock": true,
-    "category": "iPhone"
+    "category": "iPhone",
+    "badges": [
+      {"type": "stock", "text": "En Stock"},
+      {"type": "shipping", "text": "Envío Gratis ⚡"}
+    ],
+    "installments": [
+      {"months": 3, "amount": 1483201},
+      {"months": 6, "amount": 741600},
+      {"months": 12, "amount": 370800}
+    ],
+    "specifications": [
+      "Pantalla: 6.1 pulgadas, 2532 x 1170 píxeles de resolución",
+      "Memoria: 128GB de almacenamiento interno, 4GB de RAM",
+      "Cámaras: Trasera de 12MP + 12MP, Frontal de 12MP",
+      "Conectividad: Wi-Fi 6, Bluetooth 5.0, NFC",
+      "Métodos de desbloqueo: Reconocimiento facial Face ID",
+      "Marca: Apple",
+      "Línea: iPhone",
+      "Modelo: 13",
+      "Color: Varios colores disponibles",
+      "Tipo de SIM: Doble SIM (nano-SIM y eSIM)",
+      "Sistema operativo: iOS 15",
+      "Compatibilidad con tarjetas de memoria: No compatible con tarjetas SD"
+    ]
   },
   {
     "id": 2,

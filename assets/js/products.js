@@ -80,6 +80,14 @@ function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
     
+    // Make card clickable - navigate to product detail page
+    card.onclick = () => {
+        window.location.href = `product.html?id=${product.id}`;
+    };
+    
+    // Add cursor pointer style
+    card.style.cursor = 'pointer';
+    
     // Format price with thousand separators (using config or defaults)
     const locale = config.site?.locale || 'es-PY';
     const currency = config.site?.currency || 'PYG';
