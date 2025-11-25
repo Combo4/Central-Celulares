@@ -3,7 +3,7 @@
     "name": "Instagram",
     "url": "https://instagram.com/centralcelulares",
     "icon": "instagram",
-    "enabled": true
+    "enabled": false
   },
   {
     "name": "Facebook",
