@@ -22,5 +22,46 @@
   },
   "socials": {
     "showInFooter": true
+  },
+  "navigation": {
+    "items": [
+      {
+        "label": "Inicio",
+        "url": "index.html",
+        "active": true
+      },
+      {
+        "label": "Productos",
+        "url": "index.html",
+        "dropdown": [
+          {"label": "iPhone", "url": "index.html?category=iPhone"},
+          {"label": "Samsung", "url": "index.html?category=Samsung"},
+          {"label": "Xiaomi", "url": "index.html?category=Xiaomi"},
+          {"label": "Motorola", "url": "index.html?category=Motorola"}
+        ]
+      },
+      {
+        "label": "Servicios",
+        "url": "#",
+        "dropdown": [
+          {"label": "Reparaci\u00f3n", "url": "#"},
+          {"label": "Accesorios", "url": "#"},
+          {"label": "Garant\u00eda", "url": "#"}
+        ]
+      },
+      {
+        "label": "Nosotros",
+        "url": "#",
+        "dropdown": [
+          {"label": "Qui\u00e9nes Somos", "url": "#"},
+          {"label": "Nuestra Historia", "url": "#"},
+          {"label": "Ubicaci\u00f3n", "url": "#"}
+        ]
+      },
+      {
+        "label": "Contacto",
+        "url": "#footer-contact"
+      }
+    ]
   }
 }

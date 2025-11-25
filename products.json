@@ -141,5 +141,69 @@
     "image": "assets/images/products/iPhone 16E 128Gb.png",
     "inStock": true,
     "category": "iPhone"
+  },
+  {
+    "id": 15,
+    "name": "Samsung Galaxy S24 256GB",
+    "price": 5200000,
+    "oldPrice": 5500000,
+    "image": "assets/images/products/placeholder.png",
+    "inStock": true,
+    "category": "Samsung",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.2 pulgadas, 2340 x 1080 píxeles",
+      "Memoria: 256GB de almacenamiento, 8GB de RAM",
+      "Cámaras: Trasera triple 50MP + 12MP + 10MP, Frontal 12MP",
+      "Procesador: Snapdragon 8 Gen 3",
+      "Batería: 4000 mAh con carga rápida",
+      "Sistema operativo: Android 14 con One UI 6.0"
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Samsung Galaxy A54 128GB",
+    "price": 2800000,
+    "oldPrice": null,
+    "image": "assets/images/products/placeholder.png",
+    "inStock": true,
+    "category": "Samsung",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Xiaomi Redmi Note 13 Pro 256GB",
+    "price": 2400000,
+    "oldPrice": 2600000,
+    "image": "assets/images/products/placeholder.png",
+    "inStock": true,
+    "category": "Xiaomi",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ],
+    "specifications": [
+      "Pantalla: 6.67 pulgadas AMOLED, 120Hz",
+      "Memoria: 256GB de almacenamiento, 8GB de RAM",
+      "Cámara: 200MP principal + 8MP ultra gran angular + 2MP macro",
+      "Procesador: Snapdragon 7s Gen 2",
+      "Batería: 5000 mAh con carga rápida de 67W",
+      "Sistema operativo: Android 13 con MIUI 14"
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Xiaomi Poco X6 Pro 512GB",
+    "price": 3100000,
+    "oldPrice": null,
+    "image": "assets/images/products/placeholder.png",
+    "inStock": true,
+    "category": "Xiaomi",
+    "badges": [
+      {"type": "stock", "text": "En Stock"}
+    ]
   }
 ]

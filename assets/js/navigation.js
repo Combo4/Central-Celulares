@@ -1,0 +1,89 @@
+// Load and build navigation from config
+async function loadNavigation() {
+    try {
+        const response = await fetch('config.json');
+        const config = await response.json();
+        
+        if (!config.navigation || !config.navigation.items) {
+            console.warn('No navigation config found');
+            return;
+        }
+        
+        const navMenu = document.querySelector('.nav-menu');
+        if (!navMenu) return;
+        
+        navMenu.innerHTML = ''; // Clear existing nav
+        
+        config.navigation.items.forEach(item => {
+            if (item.dropdown && item.dropdown.length > 0) {
+                // Create dropdown navigation item
+                const dropdownDiv = document.createElement('div');
+                dropdownDiv.className = 'nav-item-dropdown';
+                
+                const mainLink = document.createElement('a');
+                mainLink.href = item.url;
+                mainLink.className = 'nav-link nav-link-dropdown';
+                if (item.active) mainLink.classList.add('active');
+                mainLink.innerHTML = item.label + ' <span class="dropdown-arrow">▼</span>';
+                
+                // Add click event to toggle dropdown
+                mainLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Close all other dropdowns
+                    document.querySelectorAll('.nav-item-dropdown').forEach(dropdown => {
+                        if (dropdown !== dropdownDiv) {
+                            dropdown.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle this dropdown
+                    dropdownDiv.classList.toggle('active');
+                });
+                
+                const dropdownMenu = document.createElement('div');
+                dropdownMenu.className = 'dropdown-menu';
+                
+                item.dropdown.forEach(dropdownItem => {
+                    const dropdownLink = document.createElement('a');
+                    dropdownLink.href = dropdownItem.url;
+                    dropdownLink.className = 'dropdown-item';
+                    dropdownLink.textContent = dropdownItem.label;
+                    dropdownMenu.appendChild(dropdownLink);
+                });
+                
+                dropdownDiv.appendChild(mainLink);
+                dropdownDiv.appendChild(dropdownMenu);
+                navMenu.appendChild(dropdownDiv);
+            } else {
+                // Create simple navigation link
+                const link = document.createElement('a');
+                link.href = item.url;
+                link.className = 'nav-link';
+                if (item.active) link.classList.add('active');
+                link.textContent = item.label;
+                navMenu.appendChild(link);
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error loading navigation:', error);
+    }
+}
+
+// Close dropdowns when clicking outside
+function setupDropdownCloseHandler() {
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-item-dropdown')) {
+            document.querySelectorAll('.nav-item-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+}
+
+// Initialize navigation on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadNavigation();
+    setupDropdownCloseHandler();
+});

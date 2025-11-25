@@ -39,12 +39,41 @@ function applyColumnLayout(columns) {
     document.head.appendChild(style);
 }
 
+// Get category from URL parameter
+function getCategoryFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('category');
+}
+
 // Load and display products from JSON file
 async function loadProducts() {
     try {
         const response = await fetch('products.json');
-        allProducts = await response.json();
-        displayPage(1);
+        let products = await response.json();
+        
+        // Filter by category if specified in URL
+        const category = getCategoryFromURL();
+        if (category) {
+            products = products.filter(product => 
+                product.category.toLowerCase() === category.toLowerCase()
+            );
+            
+            // Update page title to show category
+            const pageTitle = document.querySelector('.page-title');
+            if (pageTitle) {
+                pageTitle.textContent = category;
+            }
+        }
+        
+        allProducts = products;
+        
+        if (allProducts.length === 0) {
+            document.getElementById('product-grid').innerHTML = 
+                '<p style="grid-column: 1/-1; text-align: center; color: #666; padding: 2rem;">No hay productos en esta categor\u00eda.</p>';
+            document.querySelector('.pagination').style.display = 'none';
+        } else {
+            displayPage(1);
+        }
     } catch (error) {
         console.error('Error loading products:', error);
         // Show error message to user
