@@ -27,6 +27,16 @@ async function loadTheme() {
         
         console.log(`Theme loaded: ${themeName}`);
         
+        // Apply logo background if specified
+        if (config.theme.logoBackground) {
+            document.documentElement.style.setProperty('--logo-bg', config.theme.logoBackground);
+        }
+        
+        // Apply header background if specified
+        if (config.theme.headerBackground) {
+            document.documentElement.style.setProperty('--header-bg', config.theme.headerBackground);
+        }
+        
     } catch (error) {
         console.error('Error loading theme:', error);
     }

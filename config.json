@@ -25,6 +25,8 @@
   },
   "theme": {
     "current": "green",
+    "logoBackground": "#231F20",
+    "headerBackground": "#231F20",
     "available": [
       {
         "name": "cyan",

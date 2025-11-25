@@ -24,7 +24,7 @@ body {
 
 /* Header */
 .header {
-    background: #231F20;
+    background: var(--header-bg, #231F20);
     padding: 0;
     position: sticky;
     top: 0;
@@ -42,7 +42,7 @@ body {
 }
 
 .logo-box {
-    background: #231F20;
+    background: var(--logo-bg, #FFFFFF);
     padding: 30px 45px;
     display: flex;
     align-items: center;
