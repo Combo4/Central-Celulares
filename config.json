@@ -28,7 +28,8 @@
       {
         "label": "Inicio",
         "url": "index.html",
-        "active": true
+        "active": true,
+        "dropdown": []
       },
       {
         "label": "Productos",
@@ -59,8 +60,9 @@
         ]
       },
       {
-        "label": "Contacto",
-        "url": "#footer-contact"
+        "label": "",
+        "url": "#",
+        "spacer": true
       }
     ]
   }

@@ -15,8 +15,17 @@ async function loadNavigation() {
         navMenu.innerHTML = ''; // Clear existing nav
         
         config.navigation.items.forEach(item => {
-            if (item.dropdown && item.dropdown.length > 0) {
-                // Create dropdown navigation item
+            // Check if this is a spacer item
+            if (item.spacer) {
+                const spacer = document.createElement('span');
+                spacer.className = 'nav-spacer';
+                spacer.setAttribute('aria-hidden', 'true');
+                navMenu.appendChild(spacer);
+                return;
+            }
+            
+            if (item.dropdown !== undefined) {
+                // Create dropdown navigation item (even if empty)
                 const dropdownDiv = document.createElement('div');
                 dropdownDiv.className = 'nav-item-dropdown';
                 
@@ -26,20 +35,22 @@ async function loadNavigation() {
                 if (item.active) mainLink.classList.add('active');
                 mainLink.innerHTML = item.label + ' <span class="dropdown-arrow">▼</span>';
                 
-                // Add click event to toggle dropdown
-                mainLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    
-                    // Close all other dropdowns
-                    document.querySelectorAll('.nav-item-dropdown').forEach(dropdown => {
-                        if (dropdown !== dropdownDiv) {
-                            dropdown.classList.remove('active');
-                        }
+                // Only add click event if there are dropdown items
+                if (item.dropdown.length > 0) {
+                    mainLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        // Close all other dropdowns
+                        document.querySelectorAll('.nav-item-dropdown').forEach(dropdown => {
+                            if (dropdown !== dropdownDiv) {
+                                dropdown.classList.remove('active');
+                            }
+                        });
+                        
+                        // Toggle this dropdown
+                        dropdownDiv.classList.toggle('active');
                     });
-                    
-                    // Toggle this dropdown
-                    dropdownDiv.classList.toggle('active');
-                });
+                }
                 
                 const dropdownMenu = document.createElement('div');
                 dropdownMenu.className = 'dropdown-menu';
