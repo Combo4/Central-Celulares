@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Central Celulares - Catálogo</title>
+    <title>Sobre Nosotros - Central Celulares</title>
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/site-config.js"></script>
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/about.css">
 </head>
 <body>
     <!-- Top Bar -->
@@ -18,8 +19,10 @@
     <header class="header">
         <div class="header-container">
             <div class="logo-box">
-                <img src="assets/images/logonobackground.png" alt="Central Celulares" class="logo-image">
-        </div>
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="Central Celulares" class="logo-image">
+                </a>
+            </div>
             
             <nav class="nav-menu">
                 <!-- Navigation loaded dynamically from config.json -->
@@ -37,30 +40,23 @@
     <!-- Main Content -->
     <main class="main-content">
         <div class="container">
-            <h1 class="page-title">Celulares</h1>
-
-            <!-- Filters and Sort -->
-            <div class="controls">
-                <select class="sort-select">
-                    <option value="">Ordenar por...</option>
-                    <option value="price-asc">Precio menor a mayor</option>
-                    <option value="price-desc">Precio mayor a menor</option>
-                    <option value="newest">Más recientes</option>
-                </select>
+            <!-- Hero Section -->
+            <div class="about-hero">
+                <h1 class="about-title" id="about-title">Sobre Nosotros</h1>
+                <p class="about-subtitle" id="about-subtitle">Tu tienda de confianza en Paraguay</p>
+                <p class="about-description" id="about-description">
+                    En Central Celulares, nos dedicamos a ofrecer los mejores dispositivos móviles...
+                </p>
             </div>
 
-            <!-- Product Grid -->
-            <div class="product-grid" id="product-grid">
-                <!-- Products loaded dynamically from products.json -->
+            <!-- Stats Section -->
+            <div class="stats-section" id="stats-section">
+                <!-- Stats loaded dynamically -->
             </div>
 
-            <!-- Pagination -->
-            <div class="pagination">
-                <button class="page-btn" disabled>«</button>
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">3</button>
-                <button class="page-btn">»</button>
+            <!-- Features Section -->
+            <div class="features-section" id="features-section">
+                <!-- Features loaded dynamically -->
             </div>
         </div>
     </main>
@@ -77,8 +73,8 @@
         </div>
     </footer>
 
-    <!-- Load navigation and products dynamically -->
+    <!-- Load navigation and about content dynamically -->
     <script src="assets/js/navigation.js"></script>
-    <script src="assets/js/products.js"></script>
+    <script src="assets/js/about.js"></script>
 </body>
 </html>

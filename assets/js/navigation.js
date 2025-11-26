@@ -55,6 +55,11 @@ async function loadNavigation() {
                 const dropdownMenu = document.createElement('div');
                 dropdownMenu.className = 'dropdown-menu';
                 
+                // Hide dropdown if hideDropdown flag is set
+                if (item.hideDropdown) {
+                    dropdownMenu.style.display = 'none';
+                }
+                
                 item.dropdown.forEach(dropdownItem => {
                     const dropdownLink = document.createElement('a');
                     dropdownLink.href = dropdownItem.url;

@@ -9,7 +9,8 @@
   "site": {
     "name": "Central Celulares",
     "currency": "PYG",
-    "locale": "es-PY"
+    "locale": "es-PY",
+    "logo": "assets/images/logonobackground.png"
   },
   "search": {
     "minCharacters": 2,
@@ -24,7 +25,7 @@
     "showInFooter": true
   },
   "theme": {
-    "current": "green",
+    "current": "cyan",
     "logoBackground": "#231F20",
     "headerBackground": "#231F20",
     "available": [
@@ -60,13 +61,46 @@
       }
     ]
   },
+  "aboutUs": {
+    "title": "Sobre Nosotros",
+    "subtitle": "Tu tienda de confianza en Paraguay",
+    "description": "En Central Celulares, nos dedicamos a ofrecer los mejores dispositivos m\u00f3viles con garant\u00eda y servicio de calidad. Con a\u00f1os de experiencia en el mercado paraguayo, nos hemos convertido en la opci\u00f3n preferida para quienes buscan tecnolog\u00eda de primera.",
+    "sections": [
+      {
+        "icon": "\ud83d\udcf1",
+        "title": "Nuestra Misi\u00f3n",
+        "content": "Brindar acceso a la mejor tecnolog\u00eda m\u00f3vil con precios justos y atenci\u00f3n personalizada para cada cliente."
+      },
+      {
+        "icon": "\u2b50",
+        "title": "Nuestra Visi\u00f3n",
+        "content": "Ser la tienda l\u00edder en dispositivos m\u00f3viles en Paraguay, reconocidos por nuestra confiabilidad y servicio excepcional."
+      },
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Nuestros Valores",
+        "content": "Honestidad, calidad, compromiso con el cliente y pasi\u00f3n por la tecnolog\u00eda son los pilares de nuestro negocio."
+      }
+    ],
+    "stats": [
+      {
+        "number": "5+",
+        "label": "A\u00f1os de Experiencia"
+      },
+      {
+        "number": "1000+",
+        "label": "Clientes Satisfechos"
+      }
+    ]
+  },
   "navigation": {
     "items": [
       {
         "label": "Inicio",
         "url": "index.html",
         "active": true,
-        "dropdown": []
+        "dropdown": [],
+        "hideDropdown": true
       },
       {
         "label": "Productos",
@@ -89,11 +123,11 @@
       },
       {
         "label": "Nosotros",
-        "url": "#",
+        "url": "about.html",
         "dropdown": [
-          {"label": "Qui\u00e9nes Somos", "url": "#"},
-          {"label": "Nuestra Historia", "url": "#"},
-          {"label": "Ubicaci\u00f3n", "url": "#"}
+          {"label": "Qui\u00e9nes Somos", "url": "about.html"},
+          {"label": "Nuestra Historia", "url": "about.html#stats-section"},
+          {"label": "Ubicaci\u00f3n", "url": "#footer-contact"}
         ]
       },
       {
