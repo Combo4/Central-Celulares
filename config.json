@@ -64,34 +64,46 @@
   "aboutUs": {
     "title": "Sobre Nosotros",
     "subtitle": "Tu tienda de confianza en Paraguay",
-    "description": "En Central Celulares, nos dedicamos a ofrecer los mejores dispositivos m\u00f3viles con garant\u00eda y servicio de calidad. Con a\u00f1os de experiencia en el mercado paraguayo, nos hemos convertido en la opci\u00f3n preferida para quienes buscan tecnolog\u00eda de primera.",
+    "description": "En Central Celulares, nos dedicamos a ofrecer los mejores dispositivos móviles con garantía y servicio de calidad. Con años de experiencia en el mercado paraguayo, nos hemos convertido en la opción preferida para quienes buscan tecnología de primera.",
     "sections": [
       {
-        "icon": "\ud83d\udcf1",
-        "title": "Nuestra Misi\u00f3n",
-        "content": "Brindar acceso a la mejor tecnolog\u00eda m\u00f3vil con precios justos y atenci\u00f3n personalizada para cada cliente."
+        "icon": "📱",
+        "title": "Nuestra Misión",
+        "content": "Brindar acceso a la mejor tecnología móvil con precios justos y atención personalizada para cada cliente."
       },
       {
-        "icon": "\u2b50",
-        "title": "Nuestra Visi\u00f3n",
-        "content": "Ser la tienda l\u00edder en dispositivos m\u00f3viles en Paraguay, reconocidos por nuestra confiabilidad y servicio excepcional."
+        "icon": "⭐",
+        "title": "Nuestra Visión",
+        "content": "Ser la tienda líder en dispositivos móviles en Paraguay, reconocidos por nuestra confiabilidad y servicio excepcional."
       },
       {
-        "icon": "\ud83c\udfaf",
+        "icon": "🎯",
         "title": "Nuestros Valores",
-        "content": "Honestidad, calidad, compromiso con el cliente y pasi\u00f3n por la tecnolog\u00eda son los pilares de nuestro negocio."
+        "content": "Honestidad, calidad, compromiso con el cliente y pasión por la tecnología son los pilares de nuestro negocio."
       }
     ],
     "stats": [
       {
         "number": "5+",
-        "label": "A\u00f1os de Experiencia"
+        "label": "Años de Experiencia"
       },
       {
         "number": "1000+",
         "label": "Clientes Satisfechos"
       }
-    ]
+    ],
+    "history": {
+      "title": "Nuestra Historia",
+      "content": "Fundada hace más de 5 años, Central Celulares nació con la misión de democratizar el acceso a la tecnología móvil en Paraguay. Comenzamos como una pequeña tienda familiar y hemos crecido hasta convertirnos en una referencia en el mercado de dispositivos móviles.\n\nNuestra trayectoria está marcada por la confianza de miles de clientes que han encontrado en nosotros no solo productos de calidad, sino también un servicio personalizado y honesto. Cada dispositivo que vendemos viene con nuestra garantía de calidad y compromiso.\n\nHoy continuamos evolucionando, siempre fieles a nuestros valores fundacionales: honestidad, calidad y pasión por la tecnología."
+    },
+    "location": {
+      "title": "Ubicación",
+      "address": "Dirección: Calle Principal 123, Asunción, Paraguay",
+      "phone": "Teléfono: +595 21 123 4567",
+      "email": "Email: info@centralcelulares.com",
+      "hours": "Horario: Lunes a Sábado, 9:00 AM - 8:00 PM",
+      "mapEmbed": ""
+    }
   },
   "navigation": {
     "items": [
@@ -116,18 +128,18 @@
         "label": "Servicios",
         "url": "#",
         "dropdown": [
-          {"label": "Reparaci\u00f3n", "url": "#"},
+          {"label": "Reparación", "url": "#"},
           {"label": "Accesorios", "url": "#"},
-          {"label": "Garant\u00eda", "url": "#"}
+          {"label": "Garantía", "url": "#"}
         ]
       },
       {
         "label": "Nosotros",
         "url": "about.html",
         "dropdown": [
-          {"label": "Qui\u00e9nes Somos", "url": "about.html"},
-          {"label": "Nuestra Historia", "url": "about.html#stats-section"},
-          {"label": "Ubicaci\u00f3n", "url": "#footer-contact"}
+          {"label": "Quiénes Somos", "url": "about.html"},
+          {"label": "Nuestra Historia", "url": "about.html#history-section"},
+          {"label": "Ubicación", "url": "about.html#location-section"}
         ]
       },
       {
