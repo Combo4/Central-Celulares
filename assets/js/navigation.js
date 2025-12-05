@@ -1,4 +1,3 @@
-// Load and build navigation from config
 async function loadNavigation() {
     try {
         const response = await fetch('config.json');
@@ -15,7 +14,6 @@ async function loadNavigation() {
         navMenu.innerHTML = ''; // Clear existing nav
         
         config.navigation.items.forEach(item => {
-            // Check if this is a spacer item
             if (item.spacer) {
                 const spacer = document.createElement('span');
                 spacer.className = 'nav-spacer';
@@ -25,7 +23,6 @@ async function loadNavigation() {
             }
             
             if (item.dropdown !== undefined) {
-                // Create dropdown navigation item (even if empty)
                 const dropdownDiv = document.createElement('div');
                 dropdownDiv.className = 'nav-item-dropdown';
                 
@@ -35,19 +32,16 @@ async function loadNavigation() {
                 if (item.active) mainLink.classList.add('active');
                 mainLink.innerHTML = item.label + ' <span class="dropdown-arrow">▼</span>';
                 
-                // Only add click event if there are dropdown items
                 if (item.dropdown.length > 0) {
                     mainLink.addEventListener('click', (e) => {
                         e.preventDefault();
                         
-                        // Close all other dropdowns
                         document.querySelectorAll('.nav-item-dropdown').forEach(dropdown => {
                             if (dropdown !== dropdownDiv) {
                                 dropdown.classList.remove('active');
                             }
                         });
                         
-                        // Toggle this dropdown
                         dropdownDiv.classList.toggle('active');
                     });
                 }
@@ -55,7 +49,6 @@ async function loadNavigation() {
                 const dropdownMenu = document.createElement('div');
                 dropdownMenu.className = 'dropdown-menu';
                 
-                // Hide dropdown if hideDropdown flag is set
                 if (item.hideDropdown) {
                     dropdownMenu.style.display = 'none';
                 }
@@ -72,7 +65,6 @@ async function loadNavigation() {
                 dropdownDiv.appendChild(dropdownMenu);
                 navMenu.appendChild(dropdownDiv);
             } else {
-                // Create simple navigation link
                 const link = document.createElement('a');
                 link.href = item.url;
                 link.className = 'nav-link';
@@ -87,7 +79,6 @@ async function loadNavigation() {
     }
 }
 
-// Close dropdowns when clicking outside
 function setupDropdownCloseHandler() {
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.nav-item-dropdown')) {
@@ -98,7 +89,6 @@ function setupDropdownCloseHandler() {
     });
 }
 
-// Initialize navigation on page load
 document.addEventListener('DOMContentLoaded', () => {
     loadNavigation();
     setupDropdownCloseHandler();

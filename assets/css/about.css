@@ -1,11 +1,8 @@
-/* About Us Page Styles */
 
-/* Smooth scrolling for anchor links */
 html {
     scroll-behavior: smooth;
 }
 
-/* Scroll animations */
 .fade-in-section {
     opacity: 0;
     transform: translateY(30px);
@@ -17,7 +14,6 @@ html {
     transform: translateY(0);
 }
 
-/* Hero Section */
 .about-hero {
     text-align: center;
     padding: 3rem 2rem;
@@ -49,7 +45,6 @@ html {
     margin: 0 auto;
 }
 
-/* Stats Section */
 .stats-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -85,7 +80,6 @@ html {
     font-weight: 500;
 }
 
-/* Features Section */
 .features-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -126,7 +120,6 @@ html {
     line-height: 1.6;
 }
 
-/* History Section */
 .history-section {
     background: white;
     padding: 3rem 2rem;
@@ -153,7 +146,6 @@ html {
     white-space: pre-line;
 }
 
-/* Location Section */
 .location-section {
     background: white;
     padding: 3rem 2rem;
@@ -217,7 +209,6 @@ html {
     border: none;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .about-hero {
         padding: 2rem 1.5rem;

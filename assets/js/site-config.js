@@ -1,4 +1,3 @@
-// Load site configuration (logo, etc.)
 async function loadSiteConfig() {
     try {
         const response = await fetch('config.json');
@@ -9,7 +8,6 @@ async function loadSiteConfig() {
             return;
         }
         
-        // Load logo if specified
         if (config.site.logo) {
             const logoImages = document.querySelectorAll('.logo-image');
             logoImages.forEach(img => {
@@ -23,5 +21,4 @@ async function loadSiteConfig() {
     }
 }
 
-// Load site config immediately
 loadSiteConfig();

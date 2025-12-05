@@ -1,10 +1,8 @@
-// Get product ID from URL parameter
 function getProductIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     return parseInt(urlParams.get('id'));
 }
 
-// Load product details
 async function loadProductDetails() {
     const productId = getProductIdFromURL();
     
@@ -33,34 +31,25 @@ async function loadProductDetails() {
     }
 }
 
-// Display product details
 function displayProductDetails(product) {
-    // Update page title
     document.getElementById('page-title').textContent = `${product.name} - Central Celulares`;
     document.getElementById('breadcrumb-product').textContent = product.name;
     
-    // Update product image
     const productImage = document.getElementById('product-image');
     productImage.src = product.image;
     productImage.alt = product.name;
     
-    // Update product title
     document.getElementById('product-title').textContent = product.name;
     
-    // Display badges
     displayBadges(product);
     
-    // Display pricing
     displayPricing(product);
     
-    // Display specifications
     displaySpecifications(product);
     
-    // Setup WhatsApp button
     setupWhatsAppButton(product);
 }
 
-// Display badges
 function displayBadges(product) {
     const badgesContainer = document.getElementById('product-badges');
     badgesContainer.innerHTML = '';
@@ -74,7 +63,6 @@ function displayBadges(product) {
         });
     }
     
-    // Default stock badge if in stock
     if (product.inStock && (!product.badges || product.badges.length === 0)) {
         const stockBadge = document.createElement('span');
         stockBadge.className = 'shipping-badge stock';
@@ -83,7 +71,6 @@ function displayBadges(product) {
     }
 }
 
-// Display pricing
 function displayPricing(product) {
     const priceSection = document.getElementById('price-section');
     priceSection.innerHTML = '';
@@ -91,7 +78,6 @@ function displayPricing(product) {
     const locale = 'es-PY';
     const currency = 'PYG';
     
-    // Create price row
     const priceRow = document.createElement('div');
     priceRow.className = 'price-row';
     
@@ -102,7 +88,6 @@ function displayPricing(product) {
     const priceGroup = document.createElement('div');
     priceGroup.className = 'price-group';
     
-    // Old price if exists
     if (product.oldPrice) {
         const oldPriceH2 = document.createElement('h2');
         oldPriceH2.className = 'product-price old-price';
@@ -110,7 +95,6 @@ function displayPricing(product) {
         priceGroup.appendChild(oldPriceH2);
     }
     
-    // Current price
     const currentPriceH2 = document.createElement('h2');
     currentPriceH2.className = 'product-price offer-price';
     currentPriceH2.textContent = `${product.price.toLocaleString(locale)} ${currency}`;
@@ -121,7 +105,6 @@ function displayPricing(product) {
     priceSection.appendChild(priceRow);
 }
 
-// Display specifications
 function displaySpecifications(product) {
     const specsUl = document.getElementById('product-specs');
     specsUl.innerHTML = '';
@@ -138,7 +121,6 @@ function displaySpecifications(product) {
     });
 }
 
-// Setup WhatsApp button
 function setupWhatsAppButton(product) {
     const whatsappBtn = document.getElementById('whatsapp-btn');
     const whatsappNumber = '595XXXXXXXXX'; // Update with actual WhatsApp number
@@ -150,19 +132,16 @@ function setupWhatsAppButton(product) {
     };
 }
 
-// Load related products
 function loadRelatedProducts(allProducts, currentProductId) {
     const relatedGrid = document.getElementById('related-products-grid');
     relatedGrid.innerHTML = '';
     
-    // Get products from same category, excluding current product
     const currentProduct = allProducts.find(p => p.id === currentProductId);
     let relatedProducts = allProducts.filter(p => 
         p.id !== currentProductId && 
         p.category === currentProduct.category
     );
     
-    // If less than 3, add random products
     if (relatedProducts.length < 3) {
         const otherProducts = allProducts.filter(p => 
             p.id !== currentProductId && 
@@ -171,7 +150,6 @@ function loadRelatedProducts(allProducts, currentProductId) {
         relatedProducts = [...relatedProducts, ...otherProducts];
     }
     
-    // Limit to 3 products
     relatedProducts = relatedProducts.slice(0, 3);
     
     relatedProducts.forEach(product => {
@@ -180,7 +158,6 @@ function loadRelatedProducts(allProducts, currentProductId) {
     });
 }
 
-// Create related product card
 function createRelatedProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
@@ -216,7 +193,6 @@ function createRelatedProductCard(product) {
     return card;
 }
 
-// Load social links (reuse from products.js logic)
 async function loadSocials() {
     try {
         const response = await fetch('socials.json');
@@ -258,7 +234,6 @@ function displaySocials(socials) {
     });
 }
 
-// Setup contact button scroll
 function setupContactButton() {
     const contactBtn = document.getElementById('contact-btn');
     if (contactBtn) {
@@ -271,7 +246,6 @@ function setupContactButton() {
     }
 }
 
-// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     loadProductDetails();
     setupContactButton();

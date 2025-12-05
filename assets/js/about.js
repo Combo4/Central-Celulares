@@ -1,4 +1,3 @@
-// Load About Us content from config
 async function loadAboutContent() {
     try {
         const response = await fetch('config.json');
@@ -11,12 +10,10 @@ async function loadAboutContent() {
         
         const aboutData = config.aboutUs;
         
-        // Load hero content
         document.getElementById('about-title').textContent = aboutData.title;
         document.getElementById('about-subtitle').textContent = aboutData.subtitle;
         document.getElementById('about-description').textContent = aboutData.description;
         
-        // Load stats
         const statsSection = document.getElementById('stats-section');
         statsSection.innerHTML = '';
         
@@ -32,7 +29,6 @@ async function loadAboutContent() {
             });
         }
         
-        // Load features/sections
         const featuresSection = document.getElementById('features-section');
         featuresSection.innerHTML = '';
         
@@ -49,24 +45,20 @@ async function loadAboutContent() {
             });
         }
         
-        // Load history section
         if (config.aboutUs.history) {
             document.getElementById('history-title').textContent = config.aboutUs.history.title;
             document.getElementById('history-content').textContent = config.aboutUs.history.content;
         }
         
-        // Load location section
         if (config.aboutUs.location) {
             document.getElementById('location-title').textContent = config.aboutUs.location.title;
             
             const locationContent = document.getElementById('location-content');
             locationContent.innerHTML = '';
             
-            // Create location info grid
             const locationInfo = document.createElement('div');
             locationInfo.className = 'location-info';
             
-            // Add address, phone, email, hours
             ['address', 'phone', 'email', 'hours'].forEach(field => {
                 if (config.aboutUs.location[field]) {
                     const infoItem = document.createElement('div');
@@ -78,7 +70,6 @@ async function loadAboutContent() {
             
             locationContent.appendChild(locationInfo);
             
-            // Add map embed if provided
             if (config.aboutUs.location.mapEmbed) {
                 const mapContainer = document.createElement('div');
                 mapContainer.className = 'map-container';
@@ -87,7 +78,6 @@ async function loadAboutContent() {
             }
         }
         
-        // Load social links in footer
         loadSocialLinks();
         
     } catch (error) {
@@ -95,7 +85,6 @@ async function loadAboutContent() {
     }
 }
 
-// Get SVG icon for social media
 function getSocialIcon(iconName) {
     const icons = {
         instagram: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
@@ -105,7 +94,6 @@ function getSocialIcon(iconName) {
     return icons[iconName] || '';
 }
 
-// Load social links
 async function loadSocialLinks() {
     try {
         const response = await fetch('socials.json');
@@ -133,7 +121,6 @@ async function loadSocialLinks() {
     }
 }
 
-// Scroll animation observer
 function setupScrollAnimations() {
     const fadeElements = document.querySelectorAll('.fade-in-section');
     
@@ -153,7 +140,6 @@ function setupScrollAnimations() {
     });
 }
 
-// Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     loadAboutContent();
     setupScrollAnimations();

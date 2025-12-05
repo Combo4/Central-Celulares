@@ -1,4 +1,3 @@
-// Theme Loader
 async function loadTheme() {
     try {
         const response = await fetch('config.json');
@@ -11,13 +10,11 @@ async function loadTheme() {
         
         const themeName = config.theme.current;
         
-        // Create link element for theme CSS
         const themeLink = document.createElement('link');
         themeLink.rel = 'stylesheet';
         themeLink.href = `assets/css/themes/${themeName}.css`;
         themeLink.id = 'theme-stylesheet';
         
-        // Insert before the main stylesheet so it loads first
         const firstLink = document.querySelector('link[rel="stylesheet"]');
         if (firstLink) {
             firstLink.parentNode.insertBefore(themeLink, firstLink);
@@ -27,12 +24,10 @@ async function loadTheme() {
         
         console.log(`Theme loaded: ${themeName}`);
         
-        // Apply logo background if specified
         if (config.theme.logoBackground) {
             document.documentElement.style.setProperty('--logo-bg', config.theme.logoBackground);
         }
         
-        // Apply header background if specified
         if (config.theme.headerBackground) {
             document.documentElement.style.setProperty('--header-bg', config.theme.headerBackground);
         }
@@ -42,5 +37,4 @@ async function loadTheme() {
     }
 }
 
-// Load theme immediately
 loadTheme();

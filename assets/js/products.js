@@ -1,27 +1,22 @@
-// Global state
 let allProducts = [];
 let currentPage = 1;
 let config = {};
 let itemsPerPage = 12; // Default value, will be overridden by config
 
-// Load configuration
 async function loadConfig() {
     try {
         const response = await fetch('config.json');
         config = await response.json();
         itemsPerPage = config.pagination.itemsPerPage;
         
-        // Apply column layout
         if (config.layout?.columnsPerRow) {
             applyColumnLayout(config.layout.columnsPerRow);
         }
     } catch (error) {
         console.warn('Error loading config, using defaults:', error);
-        // Config already has default values
     }
 }
 
-// Apply dynamic column layout
 function applyColumnLayout(columns) {
     const percentage = (100 / columns).toFixed(3);
     const style = document.createElement('style');
@@ -32,33 +27,28 @@ function applyColumnLayout(columns) {
         }
     `;
     
-    // Remove existing dynamic style if present
     const existing = document.getElementById('dynamic-columns');
     if (existing) existing.remove();
     
     document.head.appendChild(style);
 }
 
-// Get category from URL parameter
 function getCategoryFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('category');
 }
 
-// Load and display products from JSON file
 async function loadProducts() {
     try {
         const response = await fetch('products.json');
         let products = await response.json();
         
-        // Filter by category if specified in URL
         const category = getCategoryFromURL();
         if (category) {
             products = products.filter(product => 
                 product.category.toLowerCase() === category.toLowerCase()
             );
             
-            // Update page title to show category
             const pageTitle = document.querySelector('.page-title');
             if (pageTitle) {
                 pageTitle.textContent = category;
@@ -76,13 +66,11 @@ async function loadProducts() {
         }
     } catch (error) {
         console.error('Error loading products:', error);
-        // Show error message to user
         document.getElementById('product-grid').innerHTML = 
             '<p style="grid-column: 1/-1; text-align: center; color: #666;">Error loading products. Please refresh the page.</p>';
     }
 }
 
-// Display specific page of products
 function displayPage(page) {
     currentPage = page;
     const startIndex = (page - 1) * itemsPerPage;
@@ -93,7 +81,6 @@ function displayPage(page) {
     updatePagination();
 }
 
-// Display products in the grid
 function displayProducts(products) {
     const productGrid = document.getElementById('product-grid');
     productGrid.innerHTML = ''; // Clear existing products
@@ -104,26 +91,21 @@ function displayProducts(products) {
     });
 }
 
-// Create a product card element
 function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
     
-    // Make card clickable - navigate to product detail page
     card.onclick = () => {
         window.location.href = `product.html?id=${product.id}`;
     };
     
-    // Add cursor pointer style
     card.style.cursor = 'pointer';
     
-    // Format price with thousand separators (using config or defaults)
     const locale = config.site?.locale || 'es-PY';
     const currency = config.site?.currency || 'PYG';
     const formattedPrice = product.price.toLocaleString(locale);
     const formattedOldPrice = product.oldPrice ? product.oldPrice.toLocaleString(locale) : null;
     
-    // Check if image exists, otherwise use placeholder
     const placeholder = config.display?.productImagePlaceholder || '📱';
     const imageHTML = product.image 
         ? `<img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -151,7 +133,6 @@ function createProductCard(product) {
     return card;
 }
 
-// Sort products
 function sortProducts(sortType) {
     let sortedProducts = [...allProducts];
     
@@ -163,11 +144,9 @@ function sortProducts(sortType) {
             sortedProducts.sort((a, b) => b.price - a.price);
             break;
         case 'newest':
-            // Assuming higher ID means newer
             sortedProducts.sort((a, b) => b.id - a.id);
             break;
         default:
-            // Default order (as in JSON)
             break;
     }
     
@@ -175,7 +154,6 @@ function sortProducts(sortType) {
     displayPage(1); // Reset to page 1 after sorting
 }
 
-// Search products
 function searchProducts(searchTerm) {
     fetch('products.json')
         .then(response => response.json())
@@ -196,7 +174,6 @@ function searchProducts(searchTerm) {
         });
 }
 
-// Update pagination buttons
 function updatePagination() {
     const totalPages = Math.ceil(allProducts.length / itemsPerPage);
     const paginationDiv = document.querySelector('.pagination');
@@ -209,7 +186,6 @@ function updatePagination() {
     paginationDiv.style.display = 'flex';
     paginationDiv.innerHTML = '';
     
-    // Previous button
     const prevBtn = document.createElement('button');
     prevBtn.className = 'page-btn';
     prevBtn.innerHTML = '«';
@@ -217,7 +193,6 @@ function updatePagination() {
     prevBtn.onclick = () => { if (currentPage > 1) displayPage(currentPage - 1); };
     paginationDiv.appendChild(prevBtn);
     
-    // Page buttons
     for (let i = 1; i <= totalPages; i++) {
         if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
             const pageBtn = document.createElement('button');
@@ -233,7 +208,6 @@ function updatePagination() {
         }
     }
     
-    // Next button
     const nextBtn = document.createElement('button');
     nextBtn.className = 'page-btn';
     nextBtn.innerHTML = '»';
@@ -241,13 +215,10 @@ function updatePagination() {
     nextBtn.onclick = () => { if (currentPage < totalPages) displayPage(currentPage + 1); };
     paginationDiv.appendChild(nextBtn);
     
-    // Scroll to top on page change
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Load and display social links
 async function loadSocials() {
-    // Check if socials should be shown
     if (config.socials?.showInFooter === false) {
         const socialLinksContainer = document.getElementById('social-links');
         if (socialLinksContainer) {
@@ -265,7 +236,6 @@ async function loadSocials() {
     }
 }
 
-// Get SVG icon for social media
 function getSocialIcon(iconName) {
     const icons = {
         instagram: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
@@ -275,14 +245,12 @@ function getSocialIcon(iconName) {
     return icons[iconName] || '';
 }
 
-// Display social links in footer
 function displaySocials(socials) {
     const socialLinksContainer = document.getElementById('social-links');
     if (!socialLinksContainer) return;
     
     socialLinksContainer.innerHTML = '';
     
-    // Filter only enabled socials
     const enabledSocials = socials.filter(social => social.enabled === true);
     
     enabledSocials.forEach(social => {
@@ -299,13 +267,11 @@ function displaySocials(socials) {
     });
 }
 
-// Initialize when page loads
 document.addEventListener('DOMContentLoaded', async () => {
     await loadConfig(); // Load config first
     loadProducts();
     loadSocials();
     
-    // Add contact button scroll functionality
     const contactBtn = document.getElementById('contact-btn');
     if (contactBtn) {
         contactBtn.addEventListener('click', () => {
@@ -316,7 +282,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
     
-    // Add sort functionality
     const sortSelect = document.querySelector('.sort-select');
     if (sortSelect) {
         sortSelect.addEventListener('change', (e) => {
@@ -324,12 +289,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
     
-    // Add search functionality
     const searchInput = document.querySelector('.search-input');
     const searchButton = document.querySelector('.search-button');
     
     if (searchInput && searchButton) {
-        // Search on button click
         searchButton.addEventListener('click', () => {
             const searchTerm = searchInput.value.trim();
             if (searchTerm) {
@@ -339,7 +302,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
         
-        // Search on Enter key
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const searchTerm = searchInput.value.trim();
@@ -356,7 +318,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
         
-        // Search as you type (debounced)
         let searchTimeout;
         searchInput.addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
