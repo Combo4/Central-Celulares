@@ -59,6 +59,17 @@ function getCategoryFromURL() {
     return urlParams.get('category');
 }
 
+function getConditionFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const raw = urlParams.get('condition');
+    if (!raw) return null;
+
+    const value = raw.toLowerCase();
+    if (value === 'new' || value === 'nuevo') return 'new';
+    if (value === 'used' || value === 'usado') return 'used';
+    return null;
+}
+
 async function loadProducts() {
     try {
         const response = await fetch(`${PRODUCTS_API_BASE_URL}/api/products`);
@@ -72,20 +83,28 @@ async function loadProducts() {
             image: p.image,
             inStock: p.in_stock,
             category: p.category,
+            condition: p.condition || 'new',
             badges: p.badges ? p.badges.map(text => ({ type: 'stock', text })) : [],
             specifications: p.specifications || []
         }));
         
-        const category = getCategoryFromURL();
-        if (category) {
+          if (category) {
             products = products.filter(product => 
-                product.category.toLowerCase() === category.toLowerCase()
+                product.category && product.category.toLowerCase() === category.toLowerCase()
             );
-            
+
             const pageTitle = document.querySelector('.page-title');
             if (pageTitle) {
                 pageTitle.textContent = category;
             }
+        }
+
+        if (condition) {
+            products = products.filter(product => {
+                // Default to 'new' when no condition is set in DB, so "new" shows everything by default
+                const productCondition = (product.condition || 'new').toLowerCase();
+                return productCondition === condition;
+            });
         }
         
         allProducts = products;

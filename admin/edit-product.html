@@ -165,9 +165,10 @@
                         </div>
                     </div>
                     
-                    <div style="display: flex; gap: 2rem; margin: 1rem 0; padding: 1rem 0; border-top: 1px solid #E0E0E0; border-bottom: 1px solid #E0E0E0;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 2rem; margin: 1rem 0; padding: 1rem 0; border-top: 1px solid #E0E0E0; border-bottom: 1px solid #E0E0E0;">
                         <p style="margin: 0; color: #666;"><strong>Categoría:</strong> <span id="productCategory" data-editable="category" data-value="">-</span></p>
                         <p style="margin: 0; color: #666;"><strong>Stock:</strong> <span id="productStock" data-editable="stock" data-value="">-</span></p>
+                        <p style="margin: 0; color: #666;"><strong>Estado:</strong> <span id="productCondition" data-editable="condition" data-value="Nuevo">Nuevo</span></p>
                     </div>
                     
                     <div class="product-actions">
@@ -245,6 +246,7 @@
                     old_price: null,
                     category: 'Apple',
                     in_stock: true,
+                    condition: 'new',
                     image: null,
                     badges: [],
                     specifications: DEFAULT_SPEC_TEMPLATES.slice()
@@ -310,6 +312,15 @@
             stock.innerHTML = product.in_stock ? '<span style="color: #27AE60;">✅ Disponible</span>' : '<span style="color: #e74c3c;">❌ Agotado</span>';
             stock.dataset.value = product.in_stock ? 'Disponible' : 'Agotado';
             stock.dataset.productId = product.id;
+
+            // Condition (Estado)
+            const conditionEl = document.getElementById('productCondition');
+            if (conditionEl) {
+                const conditionValue = product.condition === 'used' ? 'Usado' : 'Nuevo';
+                conditionEl.textContent = conditionValue;
+                conditionEl.dataset.value = conditionValue;
+                conditionEl.dataset.productId = product.id;
+            }
             
             // Specs
             const specsList = document.getElementById('productSpecs');
@@ -355,6 +366,12 @@
                 formData.append('old_price', window.productChanges.oldPrice || currentProduct.old_price || '');
                 formData.append('category', window.productChanges.category || currentProduct.category);
                 formData.append('in_stock', (window.productChanges.stock === 'Disponible' || currentProduct.in_stock).toString());
+
+                // Condition mapping (Nuevo/Usado → new/used)
+                const conditionLabel = window.productChanges.condition
+                    || (currentProduct.condition === 'used' ? 'Usado' : 'Nuevo');
+                const conditionValue = conditionLabel === 'Usado' ? 'used' : 'new';
+                formData.append('condition', conditionValue);
                 
                 // Handle specs
                 const specs = [];

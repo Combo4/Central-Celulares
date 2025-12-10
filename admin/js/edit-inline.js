@@ -46,6 +46,16 @@ function makeEditable(element, fieldName, currentValue, productId) {
             input.appendChild(option);
         });
         input.style.fontSize = '14px';
+    } else if (fieldName === 'condition') {
+        input = document.createElement('select');
+        ['Nuevo', 'Usado'].forEach(status => {
+            const option = document.createElement('option');
+            option.value = status;
+            option.textContent = status;
+            if (status === currentValue) option.selected = true;
+            input.appendChild(option);
+        });
+        input.style.fontSize = '14px';
     } else if (fieldName.startsWith('spec_')) {
         input = document.createElement('input');
         input.type = 'text';
@@ -82,6 +92,9 @@ function makeEditable(element, fieldName, currentValue, productId) {
                 element.classList.remove('placeholder-spec');
             } else if (fieldName === 'stock') {
                 element.innerHTML = newValue === 'Disponible' ? '<span style=\"color: #27AE60;\">✅ Disponible</span>' : '<span style=\"color: #e74c3c;\">❌ Agotado</span>';
+                element.dataset.value = newValue;
+            } else if (fieldName === 'condition') {
+                element.textContent = newValue;
                 element.dataset.value = newValue;
             } else {
                 element.textContent = newValue;
