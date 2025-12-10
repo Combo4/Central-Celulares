@@ -56,11 +56,46 @@ async function loadNavigation() {
                 }
                 
                 item.dropdown.forEach(dropdownItem => {
-                    const dropdownLink = document.createElement('a');
-                    dropdownLink.href = dropdownItem.url;
-                    dropdownLink.className = 'dropdown-item';
-                    dropdownLink.textContent = dropdownItem.label;
-                    dropdownMenu.appendChild(dropdownLink);
+                    const isProductCategory = dropdownItem.url && dropdownItem.url.includes('products.html?category=');
+
+                    if (isProductCategory) {
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'dropdown-item-wrapper has-condition';
+
+                        const mainLink = document.createElement('a');
+                        mainLink.href = dropdownItem.url;
+                        mainLink.className = 'dropdown-item';
+                        mainLink.textContent = dropdownItem.label;
+                        wrapper.appendChild(mainLink);
+
+                        const conditionMenu = document.createElement('div');
+                        conditionMenu.className = 'condition-submenu';
+
+                        const baseUrl = dropdownItem.url;
+                        const sep = baseUrl.includes('?') ? '&' : '?';
+
+                        const conditions = [
+                            { key: 'new', label: 'Nuevo' },
+                            { key: 'used', label: 'Usado' }
+                        ];
+
+                        conditions.forEach(c => {
+                            const link = document.createElement('a');
+                            link.href = `${baseUrl}${sep}condition=${c.key}`;
+                            link.className = 'condition-submenu-item';
+                            link.textContent = c.label;
+                            conditionMenu.appendChild(link);
+                        });
+
+                        wrapper.appendChild(conditionMenu);
+                        dropdownMenu.appendChild(wrapper);
+                    } else {
+                        const dropdownLink = document.createElement('a');
+                        dropdownLink.href = dropdownItem.url;
+                        dropdownLink.className = 'dropdown-item';
+                        dropdownLink.textContent = dropdownItem.label;
+                        dropdownMenu.appendChild(dropdownLink);
+                    }
                 });
                 
                 dropdownDiv.appendChild(mainLink);

@@ -180,6 +180,46 @@ body {
     color: #FFFFFF;
 }
 
+/* Nested condition submenu (Nuevo / Usado) inside product dropdowns */
+.dropdown-item-wrapper {
+    position: relative;
+}
+
+.condition-submenu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background: #2D2D2D;
+    min-width: 150px;
+    border-radius: 0 8px 8px 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: all 0.2s ease;
+    padding: 0.5rem 0;
+    z-index: 1001;
+}
+
+.dropdown-item-wrapper:hover .condition-submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.condition-submenu-item {
+    display: block;
+    padding: 0.5rem 1.25rem;
+    color: #CCCCCC;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.condition-submenu-item:hover {
+    background: var(--primary-color);
+    color: #FFFFFF;
+}
+
 .header-actions {
     display: flex;
     align-items: center;
