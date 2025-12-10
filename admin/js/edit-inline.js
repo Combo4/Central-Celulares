@@ -23,6 +23,12 @@ function makeEditable(element, fieldName, currentValue, productId) {
         input.style.fontSize = fieldName === 'oldPrice' ? '1.25rem' : '1.75rem';
         input.style.fontWeight = '700';
         input.style.width = '150px';
+        // Helpful numeric examples
+        if (fieldName === 'price') {
+            input.placeholder = 'Ej: 4500000';
+        } else {
+            input.placeholder = 'Ej: 5000000 (opcional)';
+        }
     } else if (fieldName === 'category') {
         input = document.createElement('select');
         const brands = ['Apple', 'Samsung', 'Xiaomi', 'Motorola', 'Huawei', 'Oppo', 'Realme', 'Nokia', 'LG', 'Sony', 'Otro'];
@@ -52,6 +58,8 @@ function makeEditable(element, fieldName, currentValue, productId) {
         input.value = currentValue;
         input.style.fontSize = '14px';
         input.style.width = '100%';
+        // Generic spec example
+        input.placeholder = 'Ej: Pantalla: 6.1 pulgadas OLED, 2532 x 1170';
     }
     
     input.style.border = '2px solid #00BCD4';
@@ -72,11 +80,13 @@ function makeEditable(element, fieldName, currentValue, productId) {
         if (newValue !== currentValue) {
             // Update the display
             if (fieldName === 'price' || fieldName === 'oldPrice') {
-                element.innerHTML = `<span class="product-price ${fieldName === 'oldPrice' ? 'old-price' : 'offer-price'}">${parseInt(newValue).toLocaleString('es-PY')} PYG</span>`;
+                element.innerHTML = `<span class=\"product-price ${fieldName === 'oldPrice' ? 'old-price' : 'offer-price'}\">${parseInt(newValue).toLocaleString('es-PY')} PYG</span>`;
+                element.classList.remove('placeholder-spec');
             } else if (fieldName === 'stock') {
-                element.innerHTML = newValue === 'Disponible' ? '<span style="color: #27AE60;">✅ Disponible</span>' : '<span style="color: #e74c3c;">❌ Agotado</span>';
+                element.innerHTML = newValue === 'Disponible' ? '<span style=\"color: #27AE60;\">✅ Disponible</span>' : '<span style=\"color: #e74c3c;\">❌ Agotado</span>';
             } else {
                 element.textContent = newValue;
+                element.classList.remove('placeholder-spec');
             }
             
             // Store the change (you can batch these for saving later)

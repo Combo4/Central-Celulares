@@ -13,6 +13,11 @@
             background: #231F20;
         }
         
+        /* Placeholder specs appear in grey until edited */
+        .placeholder-spec {
+            color: #999;
+        }
+        
         /* Editable field styling */
         [data-editable] {
             position: relative;
@@ -208,6 +213,15 @@
             return 'https://endless-kevina-central-celulares-8eb37001.koyeb.app/api';
         })();
 
+        const DEFAULT_SPEC_TEMPLATES = [
+            'Pantalla: 6.1 pulgadas OLED, 2532 x 1170',
+            'Memoria RAM: 6GB / 8GB',
+            'Almacenamiento: 128GB / 256GB',
+            'Cámara: 12MP Triple (Principal + Ultra gran angular + Tele)',
+            'Batería: 3095 mAh, Carga rápida 20W',
+            'Procesador: Apple A15 Bionic / Snapdragon 888'
+        ];
+
         let currentProduct = null;
         let originalProduct = null;
         let isNewProduct = false;
@@ -230,7 +244,7 @@
                     in_stock: true,
                     image: null,
                     badges: [],
-                    specifications: []
+                    specifications: DEFAULT_SPEC_TEMPLATES.slice()
                 };
                 originalProduct = JSON.parse(JSON.stringify(currentProduct));
 
@@ -298,7 +312,7 @@
             const specsList = document.getElementById('productSpecs');
             if (product.specifications && product.specifications.length > 0) {
                 specsList.innerHTML = product.specifications.map((spec, index) => 
-                    `<li data-editable="spec_${index}" data-value="${spec}" data-product-id="${product.id}">${spec}</li>`
+                    `<li class=\"${isNewProduct ? 'placeholder-spec' : ''}\" data-editable=\"spec_${index}\" data-value=\"${spec}\" data-product-id=\"${product.id}\">${spec}</li>`
                 ).join('');
             } else {
                 specsList.innerHTML = '<li style="color: #999;">Sin especificaciones</li>';
