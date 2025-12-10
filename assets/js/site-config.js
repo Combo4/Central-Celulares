@@ -1,6 +1,8 @@
+const API_BASE_URL = window.API_BASE_URL || 'http://localhost:3002';
+
 async function loadSiteConfig() {
     try {
-        const response = await fetch('http://localhost:3002/api/config/site');
+        const response = await fetch(`${API_BASE_URL}/api/config/site`);
         const site = await response.json();
         
         if (!site) {

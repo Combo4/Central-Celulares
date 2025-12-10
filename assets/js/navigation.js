@@ -1,6 +1,8 @@
+const API_BASE_URL_NAV = window.API_BASE_URL || 'http://localhost:3002';
+
 async function loadNavigation() {
     try {
-        const response = await fetch('http://localhost:3002/api/config/navigation');
+        const response = await fetch(`${API_BASE_URL_NAV}/api/config/navigation`);
         const navigation = await response.json();
         
         if (!navigation || !navigation.items) {
