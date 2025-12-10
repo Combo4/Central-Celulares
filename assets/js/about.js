@@ -1,14 +1,12 @@
 async function loadAboutContent() {
     try {
-        const response = await fetch('config.json');
-        const config = await response.json();
+        const response = await fetch('http://localhost:3002/api/config/aboutUs');
+        const aboutData = await response.json();
         
-        if (!config.aboutUs) {
+        if (!aboutData) {
             console.warn('No about us configuration found');
             return;
         }
-        
-        const aboutData = config.aboutUs;
         
         document.getElementById('about-title').textContent = aboutData.title;
         document.getElementById('about-subtitle').textContent = aboutData.subtitle;
@@ -45,13 +43,13 @@ async function loadAboutContent() {
             });
         }
         
-        if (config.aboutUs.history) {
-            document.getElementById('history-title').textContent = config.aboutUs.history.title;
-            document.getElementById('history-content').textContent = config.aboutUs.history.content;
+        if (aboutData.history) {
+            document.getElementById('history-title').textContent = aboutData.history.title;
+            document.getElementById('history-content').textContent = aboutData.history.content;
         }
         
-        if (config.aboutUs.location) {
-            document.getElementById('location-title').textContent = config.aboutUs.location.title;
+        if (aboutData.location) {
+            document.getElementById('location-title').textContent = aboutData.location.title;
             
             const locationContent = document.getElementById('location-content');
             locationContent.innerHTML = '';
@@ -60,20 +58,20 @@ async function loadAboutContent() {
             locationInfo.className = 'location-info';
             
             ['address', 'phone', 'email', 'hours'].forEach(field => {
-                if (config.aboutUs.location[field]) {
+                if (aboutData.location[field]) {
                     const infoItem = document.createElement('div');
                     infoItem.className = 'info-item';
-                    infoItem.innerHTML = `<p>${config.aboutUs.location[field]}</p>`;
+                    infoItem.innerHTML = `<p>${aboutData.location[field]}</p>`;
                     locationInfo.appendChild(infoItem);
                 }
             });
             
             locationContent.appendChild(locationInfo);
             
-            if (config.aboutUs.location.mapEmbed) {
+            if (aboutData.location.mapEmbed) {
                 const mapContainer = document.createElement('div');
                 mapContainer.className = 'map-container';
-                mapContainer.innerHTML = config.aboutUs.location.mapEmbed;
+                mapContainer.innerHTML = aboutData.location.mapEmbed;
                 locationContent.appendChild(mapContainer);
             }
         }
@@ -96,7 +94,7 @@ function getSocialIcon(iconName) {
 
 async function loadSocialLinks() {
     try {
-        const response = await fetch('socials.json');
+        const response = await fetch('http://localhost:3002/api/config/socials_data');
         const socials = await response.json();
         
         const socialLinksContainer = document.getElementById('social-links');

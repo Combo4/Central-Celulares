@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos - Central Celulares</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        body { background: #F5F5F5; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 1200px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .modal-header h2 {
+            margin: 0;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .image-preview {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 12px;
+            border-radius: 8px;
+        }
+        .badge-input, .spec-input {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .badge-input input, .spec-input input {
+            flex: 1;
+        }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        /* Product Grid - Same as main website */
+        .products-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .products-grid .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s, box-shadow 0.3s;
+            flex: 1 1 calc(25% - 1.5rem);
+            min-width: 250px;
+            max-width: 400px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .products-grid .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .product-image-wrapper {
+            position: relative;
+            background: #FAFAFA;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 220px;
+        }
+        
+        .product-image-placeholder {
+            font-size: 80px;
+            color: #BDBDBD;
+        }
+        
+        .product-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .product-info {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            flex-grow: 1;
+        }
+        
+        .product-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2C3E50;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .product-pricing {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .old-price {
+            text-decoration: line-through;
+            color: #999999;
+            font-size: 14px;
+        }
+        
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #00BCD4;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
+        
+        @media (max-width: 1200px) {
+            .products-grid .product-card {
+                flex: 1 1 calc(33.333% - 1.5rem);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .products-grid .product-card {
+                flex: 1 1 calc(50% - 1.5rem);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .products-grid .product-card {
+                flex: 1 1 100%;
+            }
+        }
+        
+        /* Product Detail Modal */
+        .product-detail-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 20px;
+        }
+        
+        .product-detail-image {
+            background: #FAFAFA;
+            padding: 2rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .detail-badges span {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            background: #00BCD4;
+            color: white;
+        }
+        
+        #detailSpecs li {
+            padding: 12px 0;
+            border-bottom: 1px solid #F0F0F0;
+            color: #555;
+        }
+        
+        #detailSpecs li:last-child {
+            border-bottom: none;
+        }
+        
+        @media (max-width: 768px) {
+            .product-detail-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Edit Modal Form Styling */
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2D2D2D;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00BCD4;
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+        }
+        
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2D2D2D;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #00BCD4;
+        }
+        
+        .badge-input {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .badge-input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .spec-input {
+            display: grid;
+            grid-template-columns: 150px auto 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .spec-input input {
+            padding: 8px 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .spec-input input:first-child {
+            font-weight: 600;
+            background: #F5F5F5;
+            cursor: default;
+        }
+        
+        .badge-input button,
+        .spec-input button {
+            padding: 8px 12px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+        
+        .badge-input button:hover,
+        .spec-input button:hover {
+            background: #c0392b;
+        }
+        
+        input[type="file"] {
+            padding: 8px;
+            border: 2px dashed #00BCD4;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        input[type="file"]::file-selector-button {
+            padding: 6px 12px;
+            background: #00BCD4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 8px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        input[type="file"]::file-selector-button:hover {
+            background: #00A8B8;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">📦 Gestión de Productos</h1>
+            <div class="dashboard-actions">
+                <a href="dashboard.html" style="margin-right: 16px; color: #00BCD4; text-decoration: none; font-weight: 600;">🏠 Dashboard</a>
+                <a href="settings.html" style="margin-right: 16px; color: #00BCD4; text-decoration: none; font-weight: 600;">⚙️ Configuración</a>
+                <span id="userEmail" style="margin: 0 16px; color: #666;"></span>
+                <button onclick="logout()" class="btn-secondary">Cerrar Sesión</button>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h2>Todos los Productos (<span id="productCount">0</span>)</h2>
+                <button onclick="openAddModal()" class="btn-primary" style="width: auto; padding: 12px 24px;">
+                    ➕ Agregar Producto
+                </button>
+            </div>
+
+            <div id="productsGrid" class="products-grid">
+                <p>Cargando productos...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="productDetailModal" class="modal">
+        <div class="modal-content" style="max-width: 1200px; width: 95%;">
+            <div class="modal-header">
+                <h2>Detalles del Producto</h2>
+                <button onclick="closeDetailModal()" class="close-btn">✕</button>
+            </div>
+            
+            <div class="product-detail-container">
+                <div class="product-detail-image" style="min-height: 500px;">
+                    <img id="detailImage" src="" alt="" style="width: 100%; max-height: 500px; object-fit: contain; border-radius: 8px;">
+                </div>
+                
+                <div class="product-detail-info">
+                    <div id="detailBadges" class="detail-badges" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;"></div>
+                    
+                    <h2 id="detailTitle" style="margin: 0 0 16px 0; font-size: 1.75rem; color: #2D2D2D;"></h2>
+                    
+                    <div style="border-top: 1px solid #E0E0E0; border-bottom: 1px solid #E0E0E0; padding: 16px 0; margin-bottom: 16px;">
+                        <div id="detailPrice" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <p style="color: #666; margin: 0;"><strong>Categoría:</strong> <span id="detailCategory"></span></p>
+                        <p style="color: #666; margin: 8px 0 0 0;"><strong>Stock:</strong> <span id="detailStock"></span></p>
+                    </div>
+                    
+                    <div id="detailSpecsSection" style="margin-top: 24px;">
+                        <h3 style="font-size: 1.25rem; margin-bottom: 12px; color: #2D2D2D;">Especificaciones</h3>
+                        <ul id="detailSpecs" style="list-style: none; padding: 0; margin: 0;"></ul>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button onclick="editProductFromDetail()" class="btn-primary" style="flex: 1;">✏️ Editar Producto</button>
+                        <button onclick="closeDetailModal()" class="btn-secondary" style="flex: 1;">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content" style="max-width: 1400px; width: 95%;">
+            <div class="modal-header">
+                <h2 id="modalTitle">Editar Producto</h2>
+                <button onclick="closeModal()" class="close-btn">✕</button>
+            </div>
+            
+            <p style="text-align: center; color: #666; margin: 0 0 20px 0; font-size: 14px;">👆 Haz clic en cualquier campo para editarlo</p>
+
+            <form id="productForm" onsubmit="saveProductInline(event)">
+                <input type="hidden" id="productId" value="">
+                
+                <!-- Copy exact structure from product.html -->
+                <div class="product-container" style="box-shadow: none; border-radius: 0; padding: 0; margin: 0;">
+                    <div class="product-image-container" style="background: #FAFAFA; cursor: pointer;" onclick="document.getElementById('image').click()" title="Haz clic para cambiar imagen">
+                        <img id="imagePreview" src="" alt="" class="product-image" style="display: none;">
+                        <div id="imagePlaceholder" style="display: flex; flex-direction: column; align-items: center; gap: 16px; color: #BDBDBD;">
+                            <div style="font-size: 80px;">📱</div>
+                            <p style="margin: 0; font-size: 14px;">Haz clic para subir imagen</p>
+                        </div>
+                        <input type="file" id="image" accept="image/*" onchange="previewImageInline(event)" style="display: none;">
+                    </div>
+                    
+                    <div class="product-info-section">
+                        <!-- Badges - Click to edit -->
+                        <div class="shipping-badges" id="editBadgesContainer">
+                            <!-- Badges will be added here -->
+                        </div>
+                        
+                        <!-- Product Title - Click to edit -->
+                        <h1 class="product-title" id="editProductTitle" data-editable="name" data-value="" style="cursor: pointer;" title="Haz clic para editar">Nombre del Producto</h1>
+                        
+                        <!-- Pricing - Click to edit -->
+                        <div class="product-price-container">
+                            <div class="price-section">
+                                <div id="editOldPriceContainer" style="display: none;">
+                                    <span class="product-price old-price" id="editOldPrice" data-editable="oldPrice" data-value="" style="cursor: pointer;" title="Haz clic para editar"></span>
+                                </div>
+                                <div>
+                                    <span class="product-price offer-price" id="editCurrentPrice" data-editable="price" data-value="" style="cursor: pointer;" title="Haz clic para editar">0 PYG</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Category and Stock - Click to edit -->
+                        <div style="display: flex; gap: 2rem; margin: 1rem 0; padding: 1rem 0; border-top: 1px solid #E0E0E0; border-bottom: 1px solid #E0E0E0;">
+                            <p style="margin: 0; color: #666;"><strong>Marca:</strong> <span id="editCategory" data-editable="category" data-value="" style="cursor: pointer; color: #00BCD4;" title="Haz clic para editar">-</span></p>
+                            <p style="margin: 0; color: #666;"><strong>Stock:</strong> <span id="editStock" data-editable="stock" data-value="" style="cursor: pointer;" title="Haz clic para editar">-</span></p>
+                        </div>
+                        
+                        <!-- Specifications - Click to edit -->
+                        <div class="product-description">
+                            <h3>Especificaciones</h3>
+                            <ul id="editSpecsList">
+                                <!-- Specs will be added here with data-editable -->
+                            </ul>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="product-actions" style="margin-top: 2rem;">
+                            <button type="submit" class="btn-whatsapp" style="background: #00BCD4;">
+                                💾 Guardar Cambios
+                            </button>
+                            <button type="button" onclick="closeModal()" class="btn-secondary" style="width: 100%; padding: 1rem; font-size: 15px;">
+                                ❌ Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/edit-inline.js"></script>
+    <script src="js/products-manager.js"></script>
+</body>
+</html>

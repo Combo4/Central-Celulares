@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migrar Configuración</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .status {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .status div {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        
+        .success {
+            color: #10b981;
+        }
+        
+        .error {
+            color: #ef4444;
+        }
+        
+        .info {
+            color: #3b82f6;
+        }
+        
+        .warning {
+            color: #f59e0b;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .summary {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Migración de Configuración</h1>
+        
+        <div id="status" class="status">
+            <div class="info">Esperando inicio de migración...</div>
+        </div>
+        
+        <button id="migrateBtn" onclick="startMigration()">Iniciar Migración de Config</button>
+        
+        <div id="summary" class="summary" style="display: none;">
+            <h3>📊 Resumen:</h3>
+            <div id="summaryContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://ovmuoyboouodqgxvpxsq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92bXVveWJvb3VvZHFneHZweHNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM0MDY4NzYsImV4cCI6MjA0ODk4Mjg3Nn0.sRDYX41lxHNTBM63o1fxTujnZo4WNtJKWQwGE5Hm1L4';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const API_URL = 'http://localhost:3002/api';
+        
+        function log(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            statusDiv.appendChild(div);
+            statusDiv.scrollTop = statusDiv.scrollHeight;
+        }
+        
+        async function getAuthToken() {
+            const { data: { session } } = await supabase.auth.getSession();
+            return session?.access_token;
+        }
+        
+        async function loadConfigFiles() {
+            try {
+                const configResponse = await fetch('../../config.json');
+                const config = await configResponse.json();
+                
+                const socialsResponse = await fetch('../../socials.json');
+                const socials = await socialsResponse.json();
+                
+                return { config, socials };
+            } catch (error) {
+                throw new Error('No se pudieron cargar los archivos de configuración');
+            }
+        }
+        
+        async function migrateConfigToDatabase(config, socials, token) {
+            const configKeys = [
+                'pagination',
+                'layout',
+                'site',
+                'search',
+                'display',
+                'socials',
+                'theme',
+                'aboutUs',
+                'navigation'
+            ];
+            
+            let successCount = 0;
+            let errorCount = 0;
+            
+            for (const key of configKeys) {
+                if (config[key]) {
+                    try {
+                        log(`📤 Migrando ${key}...`, 'info');
+                        
+                        const response = await fetch(`${API_URL}/config/${key}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ value: config[key] })
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`Error HTTP: ${response.status}`);
+                        }
+                        
+                        log(`  ✅ ${key} migrado exitosamente`, 'success');
+                        successCount++;
+                        
+                    } catch (error) {
+                        log(`  ❌ Error migrando ${key}: ${error.message}`, 'error');
+                        errorCount++;
+                    }
+                    
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                }
+            }
+            
+            try {
+                log(`📤 Migrando socials_data...`, 'info');
+                
+                const response = await fetch(`${API_URL}/config/socials_data`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ value: socials })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                
+                log(`  ✅ socials_data migrado exitosamente`, 'success');
+                successCount++;
+                
+            } catch (error) {
+                log(`  ❌ Error migrando socials_data: ${error.message}`, 'error');
+                errorCount++;
+            }
+            
+            return { successCount, errorCount };
+        }
+        
+        async function startMigration() {
+            const btn = document.getElementById('migrateBtn');
+            btn.disabled = true;
+            btn.textContent = 'Migrando...';
+            
+            document.getElementById('status').innerHTML = '';
+            log('🚀 Iniciando migración de configuración...', 'info');
+            
+            const token = await getAuthToken();
+            if (!token) {
+                log('❌ Error: No estás autenticado. Por favor inicia sesión primero.', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Iniciar Migración de Config';
+                return;
+            }
+            
+            try {
+                log('📁 Cargando archivos de configuración...', 'info');
+                const { config, socials } = await loadConfigFiles();
+                
+                log(`📦 Configuración cargada con ${Object.keys(config).length} secciones`, 'info');
+                log(`📱 ${socials.length} redes sociales encontradas`, 'info');
+                
+                log('\n🔄 Iniciando migración a base de datos...', 'info');
+                const { successCount, errorCount } = await migrateConfigToDatabase(config, socials, token);
+                
+                log('\n🎉 Migración completada!', 'success');
+                
+                const summary = document.getElementById('summary');
+                const summaryContent = document.getElementById('summaryContent');
+                summaryContent.innerHTML = `
+                    <p><strong>✅ Exitosos:</strong> ${successCount}</p>
+                    <p><strong>❌ Errores:</strong> ${errorCount}</p>
+                    <p><strong>📊 Total procesados:</strong> ${successCount + errorCount}</p>
+                `;
+                summary.style.display = 'block';
+                
+                btn.textContent = 'Migración Completada';
+                
+                setTimeout(() => {
+                    if (confirm('¿Quieres ir a la página de configuración?')) {
+                        window.location.href = 'settings.html';
+                    }
+                }, 1000);
+                
+            } catch (error) {
+                log(`❌ Error crítico: ${error.message}`, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Reintentar Migración';
+            }
+        }
+    </script>
+</body>
+</html>

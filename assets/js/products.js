@@ -5,15 +5,34 @@ let itemsPerPage = 12; // Default value, will be overridden by config
 
 async function loadConfig() {
     try {
-        const response = await fetch('config.json');
-        config = await response.json();
+        const response = await fetch('http://localhost:3002/api/config');
+        const apiConfig = await response.json();
+        
+        config = {
+            pagination: apiConfig.pagination || { itemsPerPage: 8 },
+            layout: apiConfig.layout || { columnsPerRow: 4 },
+            site: apiConfig.site || { locale: 'es-PY', currency: 'PYG' },
+            display: apiConfig.display || { showOldPrices: true, productImagePlaceholder: '📱' },
+            search: apiConfig.search || { minCharacters: 2, debounceTime: 300 },
+            socials: apiConfig.socials || { showInFooter: true }
+        };
+        
         itemsPerPage = config.pagination.itemsPerPage;
         
         if (config.layout?.columnsPerRow) {
             applyColumnLayout(config.layout.columnsPerRow);
         }
     } catch (error) {
-        console.warn('Error loading config, using defaults:', error);
+        console.warn('Error loading config from API, using defaults:', error);
+        config = {
+            pagination: { itemsPerPage: 8 },
+            layout: { columnsPerRow: 4 },
+            site: { locale: 'es-PY', currency: 'PYG' },
+            display: { showOldPrices: true, productImagePlaceholder: '📱' },
+            search: { minCharacters: 2, debounceTime: 300 },
+            socials: { showInFooter: true }
+        };
+        itemsPerPage = 8;
     }
 }
 
@@ -40,8 +59,20 @@ function getCategoryFromURL() {
 
 async function loadProducts() {
     try {
-        const response = await fetch('products.json');
+        const response = await fetch('http://localhost:3002/api/products');
         let products = await response.json();
+        
+        products = products.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            oldPrice: p.old_price,
+            image: p.image,
+            inStock: p.in_stock,
+            category: p.category,
+            badges: p.badges ? p.badges.map(text => ({ type: 'stock', text })) : [],
+            specifications: p.specifications || []
+        }));
         
         const category = getCategoryFromURL();
         if (category) {
@@ -59,7 +90,7 @@ async function loadProducts() {
         
         if (allProducts.length === 0) {
             document.getElementById('product-grid').innerHTML = 
-                '<p style="grid-column: 1/-1; text-align: center; color: #666; padding: 2rem;">No hay productos en esta categor\u00eda.</p>';
+                '<p style="grid-column: 1/-1; text-align: center; color: #666; padding: 2rem;">No hay productos en esta categoría.</p>';
             document.querySelector('.pagination').style.display = 'none';
         } else {
             displayPage(1);
@@ -155,9 +186,21 @@ function sortProducts(sortType) {
 }
 
 function searchProducts(searchTerm) {
-    fetch('products.json')
+    fetch('http://localhost:3002/api/products')
         .then(response => response.json())
         .then(products => {
+            products = products.map(p => ({
+                id: p.id,
+                name: p.name,
+                price: p.price,
+                oldPrice: p.old_price,
+                image: p.image,
+                inStock: p.in_stock,
+                category: p.category,
+                badges: p.badges ? p.badges.map(text => ({ type: 'stock', text })) : [],
+                specifications: p.specifications || []
+            }));
+            
             const filtered = products.filter(product => 
                 product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 product.category.toLowerCase().includes(searchTerm.toLowerCase())
@@ -169,7 +212,7 @@ function searchProducts(searchTerm) {
                 document.querySelector('.pagination').style.display = 'none';
             } else {
                 allProducts = filtered;
-                displayPage(1); // Reset to page 1 after search
+                displayPage(1);
             }
         });
 }
@@ -228,11 +271,11 @@ async function loadSocials() {
     }
     
     try {
-        const response = await fetch('socials.json');
+        const response = await fetch('http://localhost:3002/api/config/socials_data');
         const socials = await response.json();
         displaySocials(socials);
     } catch (error) {
-        console.warn('Error loading socials:', error);
+        console.warn('Error loading socials from API:', error);
     }
 }
 
@@ -308,10 +351,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (searchTerm) {
                     searchProducts(searchTerm);
                 } else {
-                    fetch('products.json')
+                    fetch('http://localhost:3002/api/products')
                         .then(response => response.json())
                         .then(products => {
-                            allProducts = products;
+                            allProducts = products.map(p => ({
+                                id: p.id,
+                                name: p.name,
+                                price: p.price,
+                                oldPrice: p.old_price,
+                                image: p.image,
+                                inStock: p.in_stock,
+                                category: p.category,
+                                badges: p.badges ? p.badges.map(text => ({ type: 'stock', text })) : [],
+                                specifications: p.specifications || []
+                            }));
                             displayPage(1);
                         });
                 }

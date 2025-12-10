@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migración de Productos</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .status {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .status div {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        
+        .success {
+            color: #10b981;
+        }
+        
+        .error {
+            color: #ef4444;
+        }
+        
+        .info {
+            color: #3b82f6;
+        }
+        
+        .warning {
+            color: #f59e0b;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .summary {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Migración de Productos</h1>
+        
+        <div id="status" class="status">
+            <div class="info">Esperando inicio de migración...</div>
+        </div>
+        
+        <button id="migrateBtn" onclick="startMigration()">Iniciar Migración</button>
+        
+        <div id="summary" class="summary" style="display: none;">
+            <h3>📊 Resumen:</h3>
+            <div id="summaryContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://ovmuoyboouodqgxvpxsq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92bXVveWJvb3VvZHFneHZweHNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM0MDY4NzYsImV4cCI6MjA0ODk4Mjg3Nn0.sRDYX41lxHNTBM63o1fxTujnZo4WNtJKWQwGE5Hm1L4';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const API_URL = 'http://localhost:3002/api';
+        
+        const products = [
+            {
+                "id": 1,
+                "name": "iPhone 13 128GB",
+                "price": 4449603,
+                "oldPrice": 4700000,
+                "image": "assets/images/products/iPhone 13 128GB.png",
+                "inStock": true,
+                "category": "iPhone",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.1 pulgadas, 2532 x 1170 píxeles de resolución",
+                    "Memoria: 128GB de almacenamiento interno, 4GB de RAM",
+                    "Cámaras: Trasera de 12MP + 12MP, Frontal de 12MP",
+                    "Conectividad: Wi-Fi 6, Bluetooth 5.0, NFC",
+                    "Métodos de desbloqueo: Reconocimiento facial Face ID",
+                    "Marca: Apple",
+                    "Línea: iPhone",
+                    "Modelo: 13",
+                    "Color: Varios colores disponibles",
+                    "Tipo de SIM: Doble SIM (nano-SIM y eSIM)",
+                    "Sistema operativo: iOS 15",
+                    "Compatibilidad con tarjetas de memoria: No compatible con tarjetas SD"
+                ]
+            },
+            {
+                "id": 2,
+                "name": "iPhone 14 128GB",
+                "price": 1102000,
+                "oldPrice": null,
+                "image": "assets/images/products/iPhone 14 128GB.png",
+                "inStock": true,
+                "category": "iPhone",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.1 pulgadas, 2532 x 1170 píxeles de resolución",
+                    "Memoria: 128GB de almacenamiento interno, 6GB de RAM",
+                    "Cámaras: Trasera de 12MP + 12MP, Frontal de 12MP",
+                    "Conectividad: Wi-Fi 6, Bluetooth 5.3, NFC",
+                    "Métodos de desbloqueo: Reconocimiento facial Face ID",
+                    "Marca: Apple",
+                    "Línea: iPhone",
+                    "Modelo: 14",
+                    "Color: Varios colores disponibles",
+                    "Tipo de SIM: Doble SIM (nano-SIM y eSIM)",
+                    "Sistema operativo: iOS 16",
+                    "Compatibilidad con tarjetas de memoria: No compatible con tarjetas SD"
+                ]
+            },
+            {
+                "id": 3,
+                "name": "iPhone 15 128GB",
+                "price": 7803425,
+                "oldPrice": null,
+                "image": "assets/images/products/iPhone 15 128GB.png",
+                "inStock": true,
+                "category": "iPhone",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.1 pulgadas Super Retina XDR",
+                    "Memoria: 128GB de almacenamiento, 6GB de RAM",
+                    "Cámaras: Trasera 48MP + 12MP, Frontal 12MP",
+                    "Marca: Apple",
+                    "Modelo: 15",
+                    "Sistema operativo: iOS 17"
+                ]
+            },
+            {
+                "id": 4,
+                "name": "iPhone 16 128GB",
+                "price": 3639265,
+                "oldPrice": null,
+                "image": "assets/images/products/iPhone 16 128GB.png",
+                "inStock": true,
+                "category": "iPhone",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.1 pulgadas Super Retina XDR",
+                    "Memoria: 128GB de almacenamiento, 8GB de RAM",
+                    "Cámaras: Trasera 48MP + 12MP, Frontal 12MP",
+                    "Marca: Apple",
+                    "Modelo: 16",
+                    "Sistema operativo: iOS 18"
+                ]
+            },
+            {
+                "id": 5,
+                "name": "iPhone 16 Pro 128GB",
+                "price": 4059181,
+                "oldPrice": null,
+                "image": "assets/images/products/iPhone 16 Pro 128GB.png",
+                "inStock": true,
+                "category": "iPhone",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.3 pulgadas ProMotion 120Hz",
+                    "Memoria: 128GB de almacenamiento, 8GB de RAM",
+                    "Cámaras: Trasera 48MP + 12MP + 12MP, Frontal 12MP",
+                    "Marca: Apple",
+                    "Modelo: 16 Pro",
+                    "Sistema operativo: iOS 18"
+                ]
+            },
+            {
+                "id": 6,
+                "name": "iPhone 16 Pro 128GB",
+                "price": 5500000,
+                "oldPrice": null,
+                "image": "assets/images/products/iPhone 16 Pro 128GB.png",
+                "inStock": true,
+                "category": "iPhone",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.3 pulgadas ProMotion 120Hz",
+                    "Memoria: 128GB de almacenamiento, 8GB de RAM",
+                    "Cámaras: Trasera 48MP + 12MP + 12MP, Frontal 12MP",
+                    "Marca: Apple",
+                    "Modelo: 16 Pro",
+                    "Sistema operativo: iOS 18"
+                ]
+            },
+            {
+                "id": 7,
+                "name": "iPhone 16 Pro Max 1T",
+                "price": 2800000,
+                "oldPrice": null,
+                "image": "assets/images/products/iPhone 16 Pro Max 1T.png",
+                "inStock": true,
+                "category": "iPhone",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.9 pulgadas ProMotion 120Hz",
+                    "Memoria: 1TB de almacenamiento, 8GB de RAM",
+                    "Cámaras: Trasera 48MP + 12MP + 12MP + 12MP, Frontal 12MP",
+                    "Marca: Apple",
+                    "Modelo: 16 Pro Max",
+                    "Sistema operativo: iOS 18"
+                ]
+            },
+            {
+                "id": 8,
+                "name": "iPhone 16E 128Gb",
+                "price": 3200000,
+                "oldPrice": null,
+                "image": "assets/images/products/iPhone 16E 128Gb.png",
+                "inStock": true,
+                "category": "iPhone",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.1 pulgadas Liquid Retina",
+                    "Memoria: 128GB de almacenamiento, 6GB de RAM",
+                    "Cámaras: Trasera 12MP + 12MP, Frontal 12MP",
+                    "Marca: Apple",
+                    "Modelo: 16E",
+                    "Sistema operativo: iOS 18"
+                ]
+            },
+            {
+                "id": 15,
+                "name": "Samsung Galaxy S24 256GB",
+                "price": 5200000,
+                "oldPrice": 5500000,
+                "image": "assets/images/products/placeholder.png",
+                "inStock": true,
+                "category": "Samsung",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.2 pulgadas, 2340 x 1080 píxeles",
+                    "Memoria: 256GB de almacenamiento, 8GB de RAM",
+                    "Cámaras: Trasera triple 50MP + 12MP + 10MP, Frontal 12MP",
+                    "Procesador: Snapdragon 8 Gen 3",
+                    "Batería: 4000 mAh con carga rápida",
+                    "Sistema operativo: Android 14 con One UI 6.0"
+                ]
+            },
+            {
+                "id": 16,
+                "name": "Samsung Galaxy A54 128GB",
+                "price": 2800000,
+                "oldPrice": null,
+                "image": "assets/images/products/placeholder.png",
+                "inStock": true,
+                "category": "Samsung",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.4 pulgadas Super AMOLED, 120Hz",
+                    "Memoria: 128GB de almacenamiento, 6GB de RAM",
+                    "Cámaras: Trasera 50MP + 12MP + 5MP, Frontal 32MP",
+                    "Procesador: Exynos 1380",
+                    "Batería: 5000 mAh con carga rápida de 25W",
+                    "Sistema operativo: Android 13 con One UI 5.1"
+                ]
+            },
+            {
+                "id": 17,
+                "name": "Xiaomi Redmi Note 13 Pro 256GB",
+                "price": 2400000,
+                "oldPrice": 2600000,
+                "image": "assets/images/products/placeholder.png",
+                "inStock": true,
+                "category": "Xiaomi",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.67 pulgadas AMOLED, 120Hz",
+                    "Memoria: 256GB de almacenamiento, 8GB de RAM",
+                    "Cámara: 200MP principal + 8MP ultra gran angular + 2MP macro",
+                    "Procesador: Snapdragon 7s Gen 2",
+                    "Batería: 5000 mAh con carga rápida de 67W",
+                    "Sistema operativo: Android 13 con MIUI 14"
+                ]
+            },
+            {
+                "id": 18,
+                "name": "Xiaomi Poco X6 Pro 512GB",
+                "price": 3100000,
+                "oldPrice": null,
+                "image": "assets/images/products/placeholder.png",
+                "inStock": true,
+                "category": "Xiaomi",
+                "badges": [{"type": "stock", "text": "En Stock"}],
+                "specifications": [
+                    "Pantalla: 6.67 pulgadas AMOLED, 120Hz",
+                    "Memoria: 512GB de almacenamiento, 12GB de RAM",
+                    "Cámara: 64MP principal + 8MP ultra gran angular + 2MP macro",
+                    "Procesador: Dimensity 8300-Ultra",
+                    "Batería: 5000 mAh con carga rápida de 67W",
+                    "Sistema operativo: Android 14 con HyperOS"
+                ]
+            }
+        ];
+        
+        function log(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            statusDiv.appendChild(div);
+            statusDiv.scrollTop = statusDiv.scrollHeight;
+        }
+        
+        async function getAuthToken() {
+            const { data: { session } } = await supabase.auth.getSession();
+            return session?.access_token;
+        }
+        
+        async function uploadImageFromPath(imagePath) {
+            try {
+                const response = await fetch(`../${imagePath}`);
+                const blob = await response.blob();
+                
+                const fileName = imagePath.split('/').pop();
+                const fileExt = fileName.split('.').pop();
+                const uniqueName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+                
+                const { data, error } = await supabase.storage
+                    .from('product-images')
+                    .upload(uniqueName, blob, {
+                        contentType: `image/${fileExt}`,
+                        cacheControl: '3600'
+                    });
+                
+                if (error) throw error;
+                
+                const { data: { publicUrl } } = supabase.storage
+                    .from('product-images')
+                    .getPublicUrl(uniqueName);
+                
+                return publicUrl;
+            } catch (error) {
+                log(`⚠️ Error subiendo imagen ${imagePath}: ${error.message}`, 'warning');
+                return null;
+            }
+        }
+        
+        async function startMigration() {
+            const btn = document.getElementById('migrateBtn');
+            btn.disabled = true;
+            btn.textContent = 'Migrando...';
+            
+            document.getElementById('status').innerHTML = '';
+            log('🚀 Iniciando migración de productos...', 'info');
+            
+            const token = await getAuthToken();
+            if (!token) {
+                log('❌ Error: No estás autenticado. Por favor inicia sesión primero.', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Iniciar Migración';
+                return;
+            }
+            
+            let successCount = 0;
+            let errorCount = 0;
+            let skippedCount = 0;
+            const uniqueProducts = new Map();
+            
+            products.forEach(p => {
+                const key = `${p.name}-${p.price}`;
+                if (!uniqueProducts.has(key)) {
+                    uniqueProducts.set(key, p);
+                }
+            });
+            
+            log(`📦 Total de productos únicos a migrar: ${uniqueProducts.size}`, 'info');
+            
+            for (const [key, product] of uniqueProducts) {
+                try {
+                    log(`📤 Procesando: ${product.name}...`, 'info');
+                    
+                    const formData = new FormData();
+                    formData.append('name', product.name);
+                    formData.append('price', product.price);
+                    formData.append('old_price', product.oldPrice || '');
+                    formData.append('category', product.category);
+                    formData.append('in_stock', product.inStock);
+                    
+                    const badges = product.badges.map(b => b.text);
+                    formData.append('badges', JSON.stringify(badges));
+                    formData.append('specifications', JSON.stringify(product.specifications));
+                    
+                    if (product.image && !product.image.includes('placeholder')) {
+                        formData.append('image', product.image);
+                        log(`  📷 Usando imagen local: ${product.image}`, 'info');
+                    }
+                    
+                    const response = await fetch(`${API_URL}/products`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: formData
+                    });
+                    
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.error || 'Error desconocido');
+                    }
+                    
+                    log(`  ✅ ${product.name} migrado exitosamente`, 'success');
+                    successCount++;
+                    
+                } catch (error) {
+                    log(`  ❌ Error con ${product.name}: ${error.message}`, 'error');
+                    errorCount++;
+                }
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            log(`\n🎉 Migración completada!`, 'success');
+            
+            const summary = document.getElementById('summary');
+            const summaryContent = document.getElementById('summaryContent');
+            summaryContent.innerHTML = `
+                <p><strong>✅ Exitosos:</strong> ${successCount}</p>
+                <p><strong>❌ Errores:</strong> ${errorCount}</p>
+                <p><strong>⚠️ Omitidos (duplicados):</strong> ${products.length - uniqueProducts.size}</p>
+                <p><strong>📊 Total procesados:</strong> ${uniqueProducts.size}</p>
+            `;
+            summary.style.display = 'block';
+            
+            btn.textContent = 'Migración Completada';
+            
+            setTimeout(() => {
+                if (confirm('¿Quieres ir a la página de productos para ver los resultados?')) {
+                    window.location.href = 'products.html';
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

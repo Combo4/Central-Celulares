@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Central Celulares Admin</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        body {
+            background: #F5F5F5;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">📱 Central Celulares Admin</h1>
+            <div class="dashboard-actions">
+                <a href="products.html" style="margin-right: 16px; color: #00BCD4; text-decoration: none; font-weight: 600;">📦 Productos</a>
+                <a href="settings.html" style="margin-right: 16px; color: #00BCD4; text-decoration: none; font-weight: 600;">⚙️ Configuración</a>
+                <span id="userEmail" style="margin-right: 16px; color: #666;"></span>
+                <button onclick="logout()" class="btn-secondary">Cerrar Sesión</button>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div style="background: white; padding: 40px; border-radius: 12px; text-align: center;">
+                <h2>🎉 ¡Bienvenido al Panel de Administración!</h2>
+                <p style="margin-top: 16px; color: #666;">
+                    Has iniciado sesión correctamente.
+                </p>
+                <div style="margin-top: 32px;">
+                    <h3>🚧 En Construcción</h3>
+                    <p style="color: #666; margin-top: 12px;">
+                        Las siguientes funciones se agregarán pronto:
+                    </p>
+                    <div style="display: flex; gap: 20px; justify-content: center; margin-top: 30px;">
+                        <a href="products.html" style="padding: 16px 32px; background: #00BCD4; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: background 0.3s;">📦 Gestión de Productos</a>
+                        <a href="settings.html" style="padding: 16px 32px; background: #00BCD4; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: background 0.3s;">⚙️ Configuración del Sitio</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="productsSection" style="margin-top: 24px;">
+                <h2>Productos</h2>
+                <div id="productsGrid" class="products-grid">
+                    <p>Cargando productos...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,14 +1,14 @@
 async function loadTheme() {
     try {
-        const response = await fetch('config.json');
-        const config = await response.json();
+        const response = await fetch('http://localhost:3002/api/config/theme');
+        const theme = await response.json();
         
-        if (!config.theme || !config.theme.current) {
+        if (!theme || !theme.current) {
             console.warn('No theme configuration found, using default');
             return;
         }
         
-        const themeName = config.theme.current;
+        const themeName = theme.current;
         
         const themeLink = document.createElement('link');
         themeLink.rel = 'stylesheet';
@@ -24,12 +24,16 @@ async function loadTheme() {
         
         console.log(`Theme loaded: ${themeName}`);
         
-        if (config.theme.logoBackground) {
-            document.documentElement.style.setProperty('--logo-bg', config.theme.logoBackground);
+        if (theme.logoBackground) {
+            document.documentElement.style.setProperty('--logo-bg', theme.logoBackground);
         }
         
-        if (config.theme.headerBackground) {
-            document.documentElement.style.setProperty('--header-bg', config.theme.headerBackground);
+        if (theme.headerBackground) {
+            document.documentElement.style.setProperty('--header-bg', theme.headerBackground);
+        }
+        
+        if (theme.headerActionsBackground) {
+            document.documentElement.style.setProperty('--header-actions-bg', theme.headerActionsBackground);
         }
         
     } catch (error) {

@@ -12,8 +12,21 @@ async function loadProductDetails() {
     }
     
     try {
-        const response = await fetch('products.json');
-        const products = await response.json();
+        const response = await fetch('http://localhost:3002/api/products');
+        let products = await response.json();
+        
+        products = products.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            oldPrice: p.old_price,
+            image: p.image,
+            inStock: p.in_stock,
+            category: p.category,
+            badges: p.badges ? p.badges.map(text => ({ type: 'stock', text })) : [],
+            specifications: p.specifications || []
+        }));
+        
         const product = products.find(p => p.id === productId);
         
         if (!product) {

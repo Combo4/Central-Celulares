@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Producto - Admin</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/product-detail.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Override header for admin */
+        .header {
+            background: #231F20;
+        }
+        
+        /* Editable field styling */
+        [data-editable] {
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        [data-editable]:hover::after {
+            content: '✏️';
+            position: absolute;
+            right: -30px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        [data-editable]:hover {
+            background: rgba(0, 188, 212, 0.1);
+            padding: 4px 8px;
+            margin: -4px -8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .editing {
+            background: rgba(0, 188, 212, 0.2) !important;
+        }
+        
+        .edit-hint {
+            background: #00BCD4;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .save-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 2px solid #00BCD4;
+            padding: 16px;
+            display: none;
+            justify-content: center;
+            gap: 16px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .save-bar.active {
+            display: flex;
+        }
+        
+        .btn-save {
+            background: #00BCD4;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-save:hover {
+            background: #00A8B8;
+        }
+        
+        .btn-cancel {
+            background: #E0E0E0;
+            color: #2D2D2D;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-cancel:hover {
+            background: #BDBDBD;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar" style="background: #00BCD4;">
+        <p>👆 Modo de edición: Haz clic en cualquier campo para editarlo</p>
+    </div>
+    
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-box">
+                <a href="products.html">
+                    <img src="../assets/images/logoblack.png" alt="Central Celulares" class="logo-image">
+                </a>
+            </div>
+            
+            <div class="header-right">
+                <nav class="nav-menu" style="display: flex; gap: 1.5rem;">
+                    <a href="dashboard.html" style="color: white; text-decoration: none; font-weight: 600;">🏠 Dashboard</a>
+                    <a href="products.html" style="color: white; text-decoration: none; font-weight: 600;">📱 Productos</a>
+                    <a href="settings.html" style="color: white; text-decoration: none; font-weight: 600;">⚙️ Configuración</a>
+                </nav>
+                
+                <div class="header-actions">
+                    <button onclick="logout()" class="cta-button">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <nav class="breadcrumb">
+                <a href="products.html">Admin</a>
+                <span>/</span>
+                <a href="products.html">Productos</a>
+                <span>/</span>
+                <span id="breadcrumb-product">Editar</span>
+            </nav>
+            
+            <div class="product-container">
+                <div class="product-image-container" style="cursor: pointer; position: relative;" onclick="document.getElementById('imageUpload').click()" title="Haz clic para cambiar imagen">
+                    <img src="" alt="" class="product-image" id="productImage">
+                    <div id="imagePlaceholder" style="display: none; text-align: center; color: #BDBDBD;">
+                        <div style="font-size: 80px;">📱</div>
+                        <p>Haz clic para subir imagen</p>
+                    </div>
+                    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                </div>
+                
+                <div class="product-info-section">
+                    <div class="shipping-badges" id="badgesSection">
+                        <!-- Badges will be loaded here -->
+                    </div>
+                    
+                    <h1 class="product-title" id="productTitle" data-editable="name" data-value="">Cargando...</h1>
+                    
+                    <div class="product-price-container">
+                        <div class="price-section" id="priceSection">
+                            <!-- Prices will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 2rem; margin: 1rem 0; padding: 1rem 0; border-top: 1px solid #E0E0E0; border-bottom: 1px solid #E0E0E0;">
+                        <p style="margin: 0; color: #666;"><strong>Categoría:</strong> <span id="productCategory" data-editable="category" data-value="">-</span></p>
+                        <p style="margin: 0; color: #666;"><strong>Stock:</strong> <span id="productStock" data-editable="stock" data-value="">-</span></p>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <button class="btn-whatsapp" onclick="alert('Vista previa: Botón de WhatsApp')">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path>
+                            </svg>
+                            <span>Comprar</span>
+                        </button>
+                    </div>
+                    
+                    <div class="product-description">
+                        <h3>Especificaciones</h3>
+                        <ul id="productSpecs">
+                            <li style="color: #999;">Cargando especificaciones...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>© Todos los derechos reservados @centralcelulares | Modo Administrador</p>
+            </div>
+        </div>
+    </footer>
+    
+    <div class="save-bar" id="saveBar">
+        <button class="btn-save" onclick="saveChanges()">💾 Guardar Cambios</button>
+        <button class="btn-cancel" onclick="cancelChanges()">❌ Cancelar</button>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/edit-inline.js"></script>
+    <script>
+        const API_URL = 'http://localhost:3002/api';
+        let currentProduct = null;
+        let originalProduct = null;
+        window.productChanges = {};
+        
+        async function loadProduct() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            if (!productId) {
+                alert('No se especificó ID de producto');
+                window.location.href = 'products.html';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/products/${productId}`);
+                const product = await response.json();
+                
+                currentProduct = product;
+                originalProduct = JSON.parse(JSON.stringify(product));
+                
+                displayProduct(product);
+                initializeEditMode();
+            } catch (error) {
+                console.error('Error loading product:', error);
+                alert('Error al cargar el producto');
+            }
+        }
+        
+        function displayProduct(product) {
+            // Image
+            const img = document.getElementById('productImage');
+            const placeholder = document.getElementById('imagePlaceholder');
+            if (product.image) {
+                img.src = product.image;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                img.style.display = 'none';
+                placeholder.style.display = 'block';
+            }
+            
+            // Title
+            const title = document.getElementById('productTitle');
+            title.textContent = product.name;
+            title.dataset.value = product.name;
+            title.dataset.productId = product.id;
+            
+            // Prices
+            const priceSection = document.getElementById('priceSection');
+            let priceHTML = '';
+            if (product.old_price) {
+                priceHTML += `<div><span class="product-price old-price" data-editable="oldPrice" data-value="${product.old_price}" data-product-id="${product.id}">${product.old_price.toLocaleString('es-PY')} PYG</span></div>`;
+            }
+            priceHTML += `<div><span class="product-price offer-price" data-editable="price" data-value="${product.price}" data-product-id="${product.id}">${product.price.toLocaleString('es-PY')} PYG</span></div>`;
+            priceSection.innerHTML = priceHTML;
+            
+            // Category
+            const category = document.getElementById('productCategory');
+            category.textContent = product.category;
+            category.dataset.value = product.category;
+            category.dataset.productId = product.id;
+            
+            // Stock
+            const stock = document.getElementById('productStock');
+            stock.innerHTML = product.in_stock ? '<span style="color: #27AE60;">✅ Disponible</span>' : '<span style="color: #e74c3c;">❌ Agotado</span>';
+            stock.dataset.value = product.in_stock ? 'Disponible' : 'Agotado';
+            stock.dataset.productId = product.id;
+            
+            // Specs
+            const specsList = document.getElementById('productSpecs');
+            if (product.specifications && product.specifications.length > 0) {
+                specsList.innerHTML = product.specifications.map((spec, index) => 
+                    `<li data-editable="spec_${index}" data-value="${spec}" data-product-id="${product.id}">${spec}</li>`
+                ).join('');
+            } else {
+                specsList.innerHTML = '<li style="color: #999;">Sin especificaciones</li>';
+            }
+        }
+        
+        // Image upload handler
+        document.getElementById('imageUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('productImage').src = event.target.result;
+                    document.getElementById('productImage').style.display = 'block';
+                    document.getElementById('imagePlaceholder').style.display = 'none';
+                    window.productChanges.image = file;
+                    showSaveBar();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        function showSaveBar() {
+            document.getElementById('saveBar').classList.add('active');
+        }
+        
+        async function saveChanges() {
+            if (!currentProduct) return;
+            
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                const token = session?.access_token;
+                
+                const formData = new FormData();
+                formData.append('name', window.productChanges.name || currentProduct.name);
+                formData.append('price', window.productChanges.price || currentProduct.price);
+                formData.append('old_price', window.productChanges.oldPrice || currentProduct.old_price || '');
+                formData.append('category', window.productChanges.category || currentProduct.category);
+                formData.append('in_stock', (window.productChanges.stock === 'Disponible' || currentProduct.in_stock).toString());
+                
+                // Handle specs
+                const specs = [];
+                Object.keys(window.productChanges).forEach(key => {
+                    if (key.startsWith('spec_')) {
+                        specs.push(window.productChanges[key]);
+                    }
+                });
+                if (specs.length === 0 && currentProduct.specifications) {
+                    specs.push(...currentProduct.specifications);
+                }
+                formData.append('specifications', JSON.stringify(specs));
+                
+                // Handle image
+                if (window.productChanges.image) {
+                    formData.append('image', window.productChanges.image);
+                }
+                
+                const response = await fetch(`${API_URL}/products/${currentProduct.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+                
+                if (!response.ok) throw new Error('Error al guardar');
+                
+                alert('✅ Producto actualizado correctamente');
+                window.productChanges = {};
+                document.getElementById('saveBar').classList.remove('active');
+                
+                // Reload product
+                await loadProduct();
+            } catch (error) {
+                console.error('Error saving:', error);
+                alert('❌ Error al guardar cambios');
+            }
+        }
+        
+        function cancelChanges() {
+            if (confirm('¿Descartar cambios sin guardar?')) {
+                window.productChanges = {};
+                document.getElementById('saveBar').classList.remove('active');
+                displayProduct(originalProduct);
+                initializeEditMode();
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadProduct);
+    </script>
+</body>
+</html>

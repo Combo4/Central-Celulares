@@ -1,9 +1,9 @@
 async function loadNavigation() {
     try {
-        const response = await fetch('config.json');
-        const config = await response.json();
+        const response = await fetch('http://localhost:3002/api/config/navigation');
+        const navigation = await response.json();
         
-        if (!config.navigation || !config.navigation.items) {
+        if (!navigation || !navigation.items) {
             console.warn('No navigation config found');
             return;
         }
@@ -11,9 +11,9 @@ async function loadNavigation() {
         const navMenu = document.querySelector('.nav-menu');
         if (!navMenu) return;
         
-        navMenu.innerHTML = ''; // Clear existing nav
+        navMenu.innerHTML = '';
         
-        config.navigation.items.forEach(item => {
+        navigation.items.forEach(item => {
             if (item.spacer) {
                 const spacer = document.createElement('span');
                 spacer.className = 'nav-spacer';

@@ -1,18 +1,18 @@
 async function loadSiteConfig() {
     try {
-        const response = await fetch('config.json');
-        const config = await response.json();
+        const response = await fetch('http://localhost:3002/api/config/site');
+        const site = await response.json();
         
-        if (!config.site) {
+        if (!site) {
             console.warn('No site configuration found');
             return;
         }
         
-        if (config.site.logo) {
+        if (site.logo) {
             const logoImages = document.querySelectorAll('.logo-image');
             logoImages.forEach(img => {
-                img.src = config.site.logo;
-                img.alt = config.site.name || 'Logo';
+                img.src = site.logo;
+                img.alt = site.name || 'Logo';
             });
         }
         
