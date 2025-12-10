@@ -66,6 +66,17 @@ async function loadProducts() {
 }
 
 function openAddModal() {
+    // If inline modal structure is not present (e.g., on GitHub Pages build),
+    // fall back to the dedicated create/edit page.
+    const badgesContainer = document.getElementById('badgesContainer');
+    const specsContainer = document.getElementById('specsContainer');
+    const modal = document.getElementById('productModal');
+
+    if (!badgesContainer || !specsContainer || !modal) {
+        window.location.href = 'edit-product.html?id=new';
+        return;
+    }
+
     currentEditId = null;
     document.getElementById('modalTitle').textContent = 'Agregar Producto';
     document.getElementById('productForm').reset();
@@ -79,14 +90,14 @@ function openAddModal() {
         placeholder.style.display = 'flex';
     }
     
-    document.getElementById('badgesContainer').innerHTML = '';
-    document.getElementById('specsContainer').innerHTML = '';
+    badgesContainer.innerHTML = '';
+    specsContainer.innerHTML = '';
     
     // Add default specification fields
     const defaultSpecs = ['Pantalla', 'Memoria RAM', 'Almacenamiento', 'Cámara', 'Batería', 'Procesador'];
     defaultSpecs.forEach(label => addSpecInput(label, ''));
     
-    document.getElementById('productModal').classList.add('active');
+    modal.classList.add('active');
 }
 
 // New function to populate inline edit view
