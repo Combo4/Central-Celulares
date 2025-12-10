@@ -12,6 +12,7 @@ app.use(cors({
   origin: [
     'http://localhost:5500',
     'http://127.0.0.1:5500',
+    'https://combo4.github.io',
     process.env.FRONTEND_URL
   ].filter(Boolean),
   credentials: true
