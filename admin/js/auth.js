@@ -115,7 +115,8 @@ if (document.getElementById('loginForm')) {
                 const { data, error } = await supabase.auth.verifyOtp({
                     email,
                     token: code,
-                    type: 'email'
+                    // Using magic link token delivered in the email template (.Token)
+                    type: 'magiclink'
                 });
 
                 if (error) throw error;
