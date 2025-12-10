@@ -28,16 +28,36 @@
                 </div>
 
                 <button type="submit" id="loginButton" class="btn-primary">
-                    <span id="buttonText">Enviar Enlace Mágico</span>
+                    <span id="buttonText">Enviar enlace y código</span>
                     <span id="buttonSpinner" class="spinner" style="display: none;">⏳</span>
                 </button>
             </form>
 
+            <div class="code-login" style="margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
+                <h3 style="margin-bottom: 0.75rem; font-size: 0.95rem; color: #555;">O inicia sesión con tu código</h3>
+                <div class="form-group">
+                    <label for="code">Código de 6 dígitos</label>
+                    <input 
+                        type="text" 
+                        id="code" 
+                        name="code" 
+                        maxlength="6" 
+                        inputmode="numeric" 
+                        pattern="[0-9]{6}"
+                        placeholder="••••••"
+                        autocomplete="one-time-code"
+                    >
+                </div>
+                <button type="button" id="verifyButton" class="btn-secondary" style="width: 100%;">
+                    Verificar código y entrar
+                </button>
+            </div>
+
             <div id="message" class="message" style="display: none;"></div>
 
             <div class="login-footer">
-                <p>✉️ Recibirás un enlace de acceso en tu correo</p>
-                <p class="small">El enlace expira en 1 hora</p>
+                <p>✉️ Recibirás un enlace de acceso y un código en tu correo</p>
+                <p class="small">El enlace y el código expiran en 1 hora</p>
             </div>
         </div>
     </div>

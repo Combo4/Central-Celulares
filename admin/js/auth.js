@@ -62,7 +62,7 @@ if (document.getElementById('loginForm')) {
         }
 
         setLoading(true);
-        showMessage('Enviando enlace mágico...', 'info');
+        showMessage('Enviando enlace y código...', 'info');
 
         try {
             const currentUrl = window.location.href.replace('login.html', 'dashboard.html');
@@ -77,11 +77,9 @@ if (document.getElementById('loginForm')) {
             if (error) throw error;
 
             showMessage(
-                `✅ ¡Enlace enviado! Revisa tu correo: ${email}\n\nHaz clic en el enlace para acceder al panel.`,
+                `✅ ¡Correo enviado! Revisa tu correo: ${email}\n\nRecibirás un enlace de acceso y un código de 6 dígitos.`,
                 'success'
             );
-            
-            document.getElementById('email').value = '';
             
         } catch (error) {
             console.error('Login error:', error);
@@ -93,6 +91,49 @@ if (document.getElementById('loginForm')) {
             setLoading(false);
         }
     });
+
+    const verifyButton = document.getElementById('verifyButton');
+    if (verifyButton) {
+        verifyButton.addEventListener('click', async () => {
+            const email = document.getElementById('email').value.trim();
+            const code = document.getElementById('code').value.trim();
+
+            if (!email) {
+                showMessage('Primero ingresa tu correo electrónico', 'error');
+                return;
+            }
+
+            if (!code || code.length !== 6) {
+                showMessage('Ingresa el código de 6 dígitos que recibiste por correo', 'error');
+                return;
+            }
+
+            setLoading(true);
+            showMessage('Verificando código...', 'info');
+
+            try {
+                const { data, error } = await supabase.auth.verifyOtp({
+                    email,
+                    token: code,
+                    type: 'email'
+                });
+
+                if (error) throw error;
+
+                showMessage('✅ Código verificado, entrando al panel...', 'success');
+                window.location.href = '/admin/dashboard.html';
+
+            } catch (error) {
+                console.error('Code login error:', error);
+                showMessage(
+                    `❌ Código inválido o expirado: ${error.message}`,
+                    'error'
+                );
+            } finally {
+                setLoading(false);
+            }
+        });
+    }
 }
 
 async function checkAuth() {
