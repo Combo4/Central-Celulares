@@ -9,5 +9,5 @@ window.API_BASE_URL = (function () {
   }
 
   // Production (GitHub Pages, etc.)
-  return 'https://central-celulares.onrender.com';
+  return 'https://endless-kevina-central-celulares-8eb37001.koyeb.app';
 })();

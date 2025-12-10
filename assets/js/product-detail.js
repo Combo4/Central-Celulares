@@ -1,3 +1,5 @@
+const PRODUCT_DETAIL_API_BASE_URL = window.API_BASE_URL || 'http://localhost:3002';
+
 function getProductIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     return parseInt(urlParams.get('id'));
@@ -12,7 +14,7 @@ async function loadProductDetails() {
     }
     
     try {
-        const response = await fetch('https://central-celulares.onrender.com/api/products');
+        const response = await fetch(`${PRODUCT_DETAIL_API_BASE_URL}/api/products`);
         let products = await response.json();
         
         products = products.map(p => ({
