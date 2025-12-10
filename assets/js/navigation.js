@@ -56,7 +56,7 @@ async function loadNavigation() {
                 }
                 
                 item.dropdown.forEach(dropdownItem => {
-                    const isProductCategory = dropdownItem.url && dropdownItem.url.includes('products.html?category=');
+                    const isProductCategory = dropdownItem.url && dropdownItem.url.includes('?category=');
 
                     if (isProductCategory) {
                         const wrapper = document.createElement('div');
