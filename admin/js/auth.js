@@ -103,8 +103,8 @@ if (document.getElementById('loginForm')) {
                 return;
             }
 
-            if (!code || code.length !== 6) {
-                showMessage('Ingresa el código de 6 dígitos que recibiste por correo', 'error');
+            if (!code || code.length !== 8) {
+                showMessage('Ingresa el código de 8 dígitos que recibiste por correo', 'error');
                 return;
             }
 
@@ -121,7 +121,8 @@ if (document.getElementById('loginForm')) {
                 if (error) throw error;
 
                 showMessage('✅ Código verificado, entrando al panel...', 'success');
-                window.location.href = '/admin/dashboard.html';
+                const target = window.location.href.replace('login.html', 'dashboard.html');
+                window.location.href = target;
 
             } catch (error) {
                 console.error('Code login error:', error);
