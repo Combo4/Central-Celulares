@@ -12,7 +12,7 @@ async function loadProductDetails() {
     }
     
     try {
-        const response = await fetch('http://localhost:3002/api/products');
+        const response = await fetch('https://central-celulares.onrender.com/api/products');
         let products = await response.json();
         
         products = products.map(p => ({
