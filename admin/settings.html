@@ -7,9 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="css/admin.css">
     <style>
-        body {
-            background: #F5F5F5;
-        }
         
         .settings-container {
             display: flex;
@@ -85,33 +82,6 @@
             font-weight: 600;
         }
         
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            max-width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
         
         .form-row {
             display: grid;
@@ -167,49 +137,6 @@
             margin-bottom: 10px;
         }
         
-        .toggle-switch {
-            position: relative;
-            width: 50px;
-            height: 24px;
-        }
-        
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.4s;
-            border-radius: 24px;
-        }
-        
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%;
-        }
-        
-        .toggle-switch input:checked + .toggle-slider {
-            background-color: var(--primary-color);
-        }
-        
-        .toggle-switch input:checked + .toggle-slider:before {
-            transform: translateX(26px);
-        }
         
         .save-btn {
             background: var(--primary-color);
@@ -249,40 +176,6 @@
             margin-bottom: 8px;
         }
         
-.btn-add {
-            background: #27AE60;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 10px;
-            transition: all 0.25s ease;
-        }
-        
-        .btn-add:hover {
-            background: #219150;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.35);
-        }
-        
-        .btn-remove {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.25s ease;
-        }
-
-        .btn-remove:hover {
-            background: #c0392b;
-            transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(231, 76, 60, 0.35);
-        }
         
         .admin-nav {
             background: var(--header-bg);
@@ -566,6 +459,7 @@
 </div> <!-- /.dashboard-content -->
 </div> <!-- /.dashboard-container -->
 
+<script src="js/ui.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/settings.js"></script>
 </body>

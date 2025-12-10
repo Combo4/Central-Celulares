@@ -321,9 +321,17 @@ async function saveGeneral() {
     ]);
     
     if (success.every(s => s)) {
-        alert('✅ Configuración general guardada correctamente');
+        if (window.showToast) {
+            showToast('✅ Configuración general guardada correctamente', 'success');
+        } else {
+            alert('✅ Configuración general guardada correctamente');
+        }
     } else {
-        alert('❌ Error al guardar configuración');
+        if (window.showToast) {
+            showToast('❌ Error al guardar configuración', 'error');
+        } else {
+            alert('❌ Error al guardar configuración');
+        }
     }
 }
 
@@ -337,9 +345,17 @@ async function saveTheme() {
     const success = await saveToBackend('theme', currentConfig.theme);
     
     if (success) {
-        alert('✅ Tema guardado correctamente');
+        if (window.showToast) {
+            showToast('✅ Tema guardado correctamente', 'success');
+        } else {
+            alert('✅ Tema guardado correctamente');
+        }
     } else {
-        alert('❌ Error al guardar tema');
+        if (window.showToast) {
+            showToast('❌ Error al guardar tema', 'error');
+        } else {
+            alert('❌ Error al guardar tema');
+        }
     }
 }
 
@@ -347,9 +363,17 @@ async function saveSocials() {
     const success = await saveToBackend('socials_data', currentSocials);
     
     if (success) {
-        alert('✅ Redes sociales guardadas correctamente');
+        if (window.showToast) {
+            showToast('✅ Redes sociales guardadas correctamente', 'success');
+        } else {
+            alert('✅ Redes sociales guardadas correctamente');
+        }
     } else {
-        alert('❌ Error al guardar redes sociales');
+        if (window.showToast) {
+            showToast('❌ Error al guardar redes sociales', 'error');
+        } else {
+            alert('❌ Error al guardar redes sociales');
+        }
     }
 }
 
@@ -357,9 +381,17 @@ async function saveNavigation() {
     const success = await saveToBackend('navigation', currentConfig.navigation);
     
     if (success) {
-        alert('✅ Navegación guardada correctamente');
+        if (window.showToast) {
+            showToast('✅ Navegación guardada correctamente', 'success');
+        } else {
+            alert('✅ Navegación guardada correctamente');
+        }
     } else {
-        alert('❌ Error al guardar navegación');
+        if (window.showToast) {
+            showToast('❌ Error al guardar navegación', 'error');
+        } else {
+            alert('❌ Error al guardar navegación');
+        }
     }
 }
 
@@ -377,9 +409,17 @@ async function saveAbout() {
     const success = await saveToBackend('aboutUs', currentConfig.aboutUs);
     
     if (success) {
-        alert('✅ Sobre Nosotros guardado correctamente');
+        if (window.showToast) {
+            showToast('✅ Sobre Nosotros guardado correctamente', 'success');
+        } else {
+            alert('✅ Sobre Nosotros guardado correctamente');
+        }
     } else {
-        alert('❌ Error al guardar Sobre Nosotros');
+        if (window.showToast) {
+            showToast('❌ Error al guardar Sobre Nosotros', 'error');
+        } else {
+            alert('❌ Error al guardar Sobre Nosotros');
+        }
     }
 }
 
@@ -398,9 +438,17 @@ async function saveContact() {
     const success = await saveToBackend('aboutUs', currentConfig.aboutUs);
     
     if (success) {
-        alert('✅ Información de contacto guardada correctamente');
+        if (window.showToast) {
+            showToast('✅ Información de contacto guardada correctamente', 'success');
+        } else {
+            alert('✅ Información de contacto guardada correctamente');
+        }
     } else {
-        alert('❌ Error al guardar información de contacto');
+        if (window.showToast) {
+            showToast('❌ Error al guardar información de contacto', 'error');
+        } else {
+            alert('❌ Error al guardar información de contacto');
+        }
     }
 }
 
@@ -420,9 +468,17 @@ async function saveDisplay() {
     ]);
     
     if (success.every(s => s)) {
-        alert('✅ Opciones de visualización guardadas correctamente');
+        if (window.showToast) {
+            showToast('✅ Opciones de visualización guardadas correctamente', 'success');
+        } else {
+            alert('✅ Opciones de visualización guardadas correctamente');
+        }
     } else {
-        alert('❌ Error al guardar opciones de visualización');
+        if (window.showToast) {
+            showToast('❌ Error al guardar opciones de visualización', 'error');
+        } else {
+            alert('❌ Error al guardar opciones de visualización');
+        }
     }
 }
 

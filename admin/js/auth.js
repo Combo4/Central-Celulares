@@ -77,7 +77,7 @@ if (document.getElementById('loginForm')) {
             if (error) throw error;
 
             showMessage(
-                `✅ ¡Correo enviado! Revisa tu correo: ${email}\n\nRecibirás un enlace de acceso y un código de 6 dígitos.`,
+                `✅ ¡Correo enviado! Revisa tu correo: ${email}\n\nRecibirás un enlace de acceso y un código de 8 dígitos.`,
                 'success'
             );
             
@@ -100,11 +100,14 @@ if (document.getElementById('loginForm')) {
 
             if (!email) {
                 showMessage('Primero ingresa tu correo electrónico', 'error');
+                if (window.showToast) showToast('Primero ingresa tu correo electrónico', 'error');
                 return;
             }
 
-            if (!code || code.length !== 8) {
-                showMessage('Ingresa el código de 8 dígitos que recibiste por correo', 'error');
+            if (!/^\d{8}$/.test(code)) {
+                const msg = 'Ingresa el código de 8 dígitos que recibiste por correo';
+                showMessage(msg, 'error');
+                if (window.showToast) showToast(msg, 'error');
                 return;
             }
 
@@ -115,8 +118,7 @@ if (document.getElementById('loginForm')) {
                 const { data, error } = await supabase.auth.verifyOtp({
                     email,
                     token: code,
-                    // Using magic link token delivered in the email template (.Token)
-                    type: 'magiclink'
+                    type: 'email'
                 });
 
                 if (error) throw error;

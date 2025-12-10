@@ -26,8 +26,8 @@ async function loadProducts() {
         }
         
         grid.innerHTML = products.map(product => {
-            const formattedPrice = product.price.toLocaleString('es-PY');
-            const formattedOldPrice = product.old_price ? product.old_price.toLocaleString('es-PY') : null;
+            const formattedPrice = Number(product.price || 0).toLocaleString('es-PY');
+            const formattedOldPrice = product.old_price ? Number(product.old_price || 0).toLocaleString('es-PY') : null;
 
             const imageHTML = product.image 
                 ? `<img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -61,7 +61,7 @@ async function loadProducts() {
     } catch (error) {
         console.error('Error loading products:', error);
         document.getElementById('productsGrid').innerHTML = 
-            '<p style="color: red;">Error cargando productos. Verifica que el backend esté corriendo en el puerto 3001.</p>';
+            '<p style="color: red;">Error cargando productos. Verifica que la API esté disponible.</p>';
     }
 }
 
@@ -179,7 +179,11 @@ async function deleteProduct(id, name) {
         
         if (!response.ok) throw new Error('Error al eliminar');
         
-        alert('✅ Producto eliminado correctamente');
+        if (window.showToast) {
+            showToast('✅ Producto eliminado correctamente', 'success');
+        } else {
+            alert('✅ Producto eliminado correctamente');
+        }
         loadProducts();
         
     } catch (error) {
@@ -242,7 +246,12 @@ async function saveProduct(event) {
             throw new Error(error.error || 'Error al guardar');
         }
         
-        alert(productId ? '✅ Producto actualizado correctamente' : '✅ Producto agregado correctamente');
+        const okMessage = productId ? '✅ Producto actualizado correctamente' : '✅ Producto agregado correctamente';
+        if (window.showToast) {
+            showToast(okMessage, 'success');
+        } else {
+            alert(okMessage);
+        }
         closeModal();
         loadProducts();
         

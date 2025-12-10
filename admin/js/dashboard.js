@@ -25,7 +25,7 @@ async function loadProducts() {
         grid.innerHTML = products.map(product => `
             <div class="product-card">
                 <h3>${product.name}</h3>
-                <p><strong>Precio:</strong> ${product.price.toLocaleString()} PYG</p>
+                <p><strong>Precio:</strong> ${Number(product.price || 0).toLocaleString('es-PY')} PYG</p>
                 <p><strong>Categoría:</strong> ${product.category}</p>
                 <p><strong>Stock:</strong> ${product.in_stock ? '✅ Disponible' : '❌ Agotado'}</p>
                 <div class="product-actions">

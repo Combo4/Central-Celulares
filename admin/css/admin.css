@@ -7,19 +7,36 @@
 :root {
     --primary-color: #00BCD4;
     --primary-hover: #00A8B8;
-    --secondary-color: #FF9800;
+    --secondary-color: #6c757d;
     --header-bg: #231F20;
     --header-actions-bg: #3A3A3A;
+    --text-dark: #2D2D2D;
+}
+
+html, body {
+    height: 100%;
 }
 
 body {
     font-family: 'Inter', -apple-system, system-ui, sans-serif;
-    background: linear-gradient(135deg, #00BCD4 0%, #00A8B8 100%);
+    background: #F5F5F5;
+    color: var(--text-dark);
     min-height: 100vh;
+}
+
+/* Login page scoped layout */
+body.login-page {
     display: flex;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(135deg, #00BCD4 0%, #00A8B8 100%);
     padding: 20px;
+}
+
+.body-login-container,
+.login-container {
+    width: 100%;
+    max-width: 420px;
 }
 
 .login-container {
@@ -78,16 +95,21 @@ body {
     font-size: 14px;
 }
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 12px 16px;
     border: 2px solid #E0E0E0;
     border-radius: 8px;
     font-size: 15px;
     transition: all 0.3s;
+    box-sizing: border-box;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: #00BCD4;
     box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
@@ -96,7 +118,7 @@ body {
 .btn-primary {
     width: 100%;
     padding: 14px;
-    background: #00BCD4;
+    background: var(--primary-color);
     color: white;
     border: none;
     border-radius: 8px;
@@ -111,7 +133,7 @@ body {
 }
 
 .btn-primary:hover {
-    background: #00A8B8;
+    background: var(--primary-hover);
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 188, 212, 0.4);
 }
@@ -256,6 +278,202 @@ body {
 .btn-secondary:active {
     transform: translateY(0);
     box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.btn-edit {
+    background: var(--primary-color);
+    color: #FFFFFF;
+}
+
+.btn-edit:hover {
+    background: var(--primary-hover);
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: #FFFFFF;
+}
+
+.btn-delete:hover {
+    background: #c82333;
+}
+
+/* Focus-visible for accessibility */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-small:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(0, 188, 212, 0.45);
+    outline-offset: 2px;
+}
+
+/* Product cards and pricing shared helpers */
+.old-price {
+    text-decoration: line-through;
+    color: #999999;
+}
+
+.product-image-wrapper {
+    position: relative;
+    background: #FAFAFA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.product-image-placeholder {
+    font-size: 80px;
+    color: #BDBDBD;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-title {
+    font-weight: 700;
+}
+
+.product-pricing {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+/* Toast notifications */
+#toast {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toast {
+    min-width: 260px;
+    max-width: 380px;
+    background: #1f2937;
+    color: #fff;
+    padding: 12px 14px;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    transform: translateY(8px);
+    opacity: 0;
+    transition: opacity .2s ease, transform .2s ease;
+    border-left: 4px solid var(--primary-color);
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast.success {
+    border-left-color: #22c55e;
+    background: #14532d;
+}
+
+.toast.error {
+    border-left-color: #ef4444;
+    background: #7f1d1d;
+}
+
+.toast.info {
+    border-left-color: var(--primary-color);
+}
+
+/* Toggle switch (used in settings) */
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: var(--primary-color);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+}
+
+/* Small add/remove buttons (used in settings navigation, socials, stats) */
+.btn-add {
+    background: #27AE60;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: all 0.25s ease;
+}
+
+.btn-add:hover {
+    background: #219150;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.35);
+}
+
+.btn-remove {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.25s ease;
+}
+
+.btn-remove:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(231, 76, 60, 0.35);
 }
 
 .dashboard-content {
