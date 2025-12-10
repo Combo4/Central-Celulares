@@ -268,6 +268,7 @@
                 <li data-section="socials">📱 Redes Sociales</li>
                 <li data-section="navigation">🧭 Navegación</li>
                 <li data-section="about">ℹ️ Sobre Nosotros</li>
+                <li data-section="services">🛠️ Servicios</li>
                 <li data-section="contact">📞 Contacto</li>
                 <li data-section="display">👁️ Visualización</li>
             </ul>
@@ -398,6 +399,30 @@
                 </div>
                 
                 <button class="save-btn" onclick="saveAbout()">💾 Guardar Sobre Nosotros</button>
+            </section>
+
+            <section id="services" class="settings-section">
+                <h2>🛠️ Servicios</h2>
+                
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="servicesTitle">
+                </div>
+                
+                <div class="form-group">
+                    <label>Subtítulo</label>
+                    <input type="text" id="servicesSubtitle">
+                </div>
+                
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="servicesDescription"></textarea>
+                </div>
+                
+                <h3>🔧 Tarjetas de Servicios</h3>
+                <div id="servicesSectionsContainer"></div>
+                
+                <button class="save-btn" onclick="saveServices()">💾 Guardar Servicios</button>
             </section>
 
             <section id="contact" class="settings-section">

@@ -33,6 +33,7 @@ async function loadAllConfig() {
             socials: allConfig.socials || {},
             theme: allConfig.theme || {},
             aboutUs: allConfig.aboutUs || {},
+            services: allConfig.services || {},
             navigation: allConfig.navigation || { items: [] }
         };
         
@@ -86,6 +87,12 @@ function populateAllForms() {
     document.getElementById('historyContent').value = currentConfig.aboutUs?.history?.content || '';
     
     renderStats();
+
+    // Services
+    document.getElementById('servicesTitle').value = currentConfig.services?.title || '';
+    document.getElementById('servicesSubtitle').value = currentConfig.services?.subtitle || '';
+    document.getElementById('servicesDescription').value = currentConfig.services?.description || '';
+    renderServicesSections();
     
     document.getElementById('locationAddress').value = currentConfig.aboutUs?.location?.address || '';
     document.getElementById('locationPhone').value = currentConfig.aboutUs?.location?.phone || '';
@@ -260,6 +267,59 @@ function removeStat(index) {
     renderStats();
 }
 
+// ===== Servicios (services) =====
+function renderServicesSections() {
+    const container = document.getElementById('servicesSectionsContainer');
+    container.innerHTML = '';
+
+    if (!currentConfig.services) currentConfig.services = {};
+    if (!currentConfig.services.sections) currentConfig.services.sections = [];
+
+    currentConfig.services.sections.forEach((section, index) => {
+        const div = document.createElement('div');
+        div.className = 'form-row';
+        div.style.marginBottom = '15px';
+        div.innerHTML = `
+            <div class="form-group">
+                <label>Icono (emoji)</label>
+                <input type="text" value="${section.icon || ''}" onchange="updateServiceSection(${index}, 'icon', this.value)">
+            </div>
+            <div class="form-group">
+                <label>Título</label>
+                <input type="text" value="${section.title || ''}" onchange="updateServiceSection(${index}, 'title', this.value)">
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label>Contenido</label>
+                <textarea onchange="updateServiceSection(${index}, 'content', this.value)">${section.content || ''}</textarea>
+            </div>
+            <button class="btn-remove" onclick="removeServiceSection(${index})">❌</button>
+        `;
+        container.appendChild(div);
+    });
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'btn-add';
+    addBtn.textContent = '➕ Agregar Servicio';
+    addBtn.onclick = addServiceSection;
+    container.appendChild(addBtn);
+}
+
+function updateServiceSection(index, field, value) {
+    currentConfig.services.sections[index][field] = value;
+}
+
+function addServiceSection() {
+    if (!currentConfig.services) currentConfig.services = {};
+    if (!currentConfig.services.sections) currentConfig.services.sections = [];
+    currentConfig.services.sections.push({ icon: '🔧', title: 'Nuevo Servicio', content: '' });
+    renderServicesSections();
+}
+
+function removeServiceSection(index) {
+    currentConfig.services.sections.splice(index, 1);
+    renderServicesSections();
+}
+
 async function saveToBackend(key, value) {
     try {
         const token = await getAuthToken();
@@ -419,6 +479,29 @@ async function saveAbout() {
             showToast('❌ Error al guardar Sobre Nosotros', 'error');
         } else {
             alert('❌ Error al guardar Sobre Nosotros');
+        }
+    }
+}
+
+async function saveServices() {
+    currentConfig.services = currentConfig.services || {};
+    currentConfig.services.title = document.getElementById('servicesTitle').value;
+    currentConfig.services.subtitle = document.getElementById('servicesSubtitle').value;
+    currentConfig.services.description = document.getElementById('servicesDescription').value;
+
+    const success = await saveToBackend('services', currentConfig.services);
+
+    if (success) {
+        if (window.showToast) {
+            showToast('✅ Servicios guardados correctamente', 'success');
+        } else {
+            alert('✅ Servicios guardados correctamente');
+        }
+    } else {
+        if (window.showToast) {
+            showToast('❌ Error al guardar Servicios', 'error');
+        } else {
+            alert('❌ Error al guardar Servicios');
         }
     }
 }
