@@ -1,4 +1,9 @@
-const API_URL = 'http://localhost:3002/api';
+const API_URL = (function () {
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+        return 'http://localhost:3002/api';
+    }
+    return 'https://endless-kevina-central-celulares-8eb37001.koyeb.app/api';
+})();
 let currentEditId = null;
 
 async function getAuthToken() {
