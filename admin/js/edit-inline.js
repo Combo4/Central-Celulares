@@ -127,26 +127,22 @@ function initializeEditMode() {
             if (!element.classList.contains('editing')) {
                 element.style.background = 'rgba(0, 188, 212, 0.1)';
                 element.style.borderRadius = '4px';
-                element.style.padding = '4px 8px';
-                element.style.margin = '-4px -8px';
-                element.style.position = 'relative';
-                
-                // Add edit icon
-                const icon = document.createElement('span');
-                icon.className = 'edit-icon-hint';
-                icon.textContent = '✏️';
-                icon.style.cssText = 'position: absolute; right: 2px; top: 2px; font-size: 12px; opacity: 0.7;';
-                element.appendChild(icon);
+
+                // Add edit icon (no layout shift)
+                if (!element.querySelector('.edit-icon-hint')) {
+                    const icon = document.createElement('span');
+                    icon.className = 'edit-icon-hint';
+                    icon.textContent = '✏️';
+                    icon.style.cssText = 'margin-left: 4px; font-size: 12px; opacity: 0.7;';
+                    element.appendChild(icon);
+                }
             }
         });
         
         element.addEventListener('mouseleave', () => {
             if (!element.classList.contains('editing')) {
                 element.style.background = '';
-                element.style.padding = '';
-                element.style.margin = '';
-                element.style.position = '';
-                
+
                 // Remove edit icon
                 const icon = element.querySelector('.edit-icon-hint');
                 if (icon) icon.remove();

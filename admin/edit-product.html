@@ -184,6 +184,9 @@
                         <ul id="productSpecs">
                             <li style="color: #999;">Cargando especificaciones...</li>
                         </ul>
+                        <button type="button" id="addSpecButton" class="btn-secondary" style="margin-top: 0.75rem; max-width: 260px;">
+                            ➕ Agregar especificación
+                        </button>
                     </div>
                 </div>
             </div>
@@ -409,7 +412,31 @@
             }
         }
         
-        document.addEventListener('DOMContentLoaded', loadProduct);
+        function addNewSpecification() {
+            if (!currentProduct) return;
+            const specsList = document.getElementById('productSpecs');
+            const index = specsList.querySelectorAll('li').length;
+            const placeholderText = 'Nueva especificación...';
+
+            const li = document.createElement('li');
+            li.textContent = placeholderText;
+            li.className = 'placeholder-spec';
+            li.dataset.editable = `spec_${index}`;
+            li.dataset.value = placeholderText;
+            li.dataset.productId = currentProduct.id || 'new';
+            specsList.appendChild(li);
+
+            initializeEditMode();
+            showSaveBar();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProduct();
+            const addSpecBtn = document.getElementById('addSpecButton');
+            if (addSpecBtn) {
+                addSpecBtn.addEventListener('click', addNewSpecification);
+            }
+        });
     </script>
 </body>
 </html>
