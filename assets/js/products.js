@@ -64,7 +64,7 @@ function getConditionFromURL() {
     const raw = urlParams.get('condition');
     if (!raw) return null;
 
-    const value = raw.toLowerCase();
+    const value = raw.toString().trim().toLowerCase();
     if (value === 'new' || value === 'nuevo') return 'new';
     if (value === 'used' || value === 'usado') return 'used';
     return null;
@@ -87,8 +87,11 @@ async function loadProducts() {
             badges: p.badges ? p.badges.map(text => ({ type: 'stock', text })) : [],
             specifications: p.specifications || []
         }));
+
+        const category = getCategoryFromURL();
+        const condition = getConditionFromURL();
         
-          if (category) {
+        if (category) {
             products = products.filter(product => 
                 product.category && product.category.toLowerCase() === category.toLowerCase()
             );
