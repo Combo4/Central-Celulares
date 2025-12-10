@@ -290,6 +290,29 @@ body {
     margin-top: 16px;
 }
 
+/* Inline edit inputs on product edit page */
+.inline-edit-input {
+    width: 100%;
+    font-size: inherit;
+    font-weight: inherit;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-family: inherit;
+    color: #2D2D2D;
+    box-sizing: border-box;
+}
+
+.inline-edit-select {
+    font-size: inherit;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-family: inherit;
+    color: #2D2D2D;
+    background: #FFFFFF;
+}
+
 .btn-small {
     padding: 8px 16px;
     font-size: 13px;

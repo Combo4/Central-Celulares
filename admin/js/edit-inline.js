@@ -12,17 +12,13 @@ function makeEditable(element, fieldName, currentValue, productId) {
     if (fieldName === 'name') {
         input = document.createElement('input');
         input.type = 'text';
-        input.value = currentValue;
-        input.style.fontSize = '2rem';
-        input.style.fontWeight = '700';
-        input.style.width = '100%';
+        input.value = currentValue || '';
+        input.placeholder = 'Nombre del producto';
     } else if (fieldName === 'price' || fieldName === 'oldPrice') {
         input = document.createElement('input');
         input.type = 'number';
         input.value = currentValue || '';
-        input.style.fontSize = fieldName === 'oldPrice' ? '1.25rem' : '1.75rem';
-        input.style.fontWeight = '700';
-        input.style.width = '150px';
+        input.step = '1';
         // Helpful numeric examples
         if (fieldName === 'price') {
             input.placeholder = 'Ej: 4500000';
@@ -39,8 +35,7 @@ function makeEditable(element, fieldName, currentValue, productId) {
             if (brand === currentValue) option.selected = true;
             input.appendChild(option);
         });
-        input.style.fontSize = '16px';
-        input.style.padding = '8px';
+        input.style.fontSize = '14px';
     } else if (fieldName === 'stock') {
         input = document.createElement('select');
         ['Disponible', 'Agotado'].forEach(status => {
@@ -51,26 +46,28 @@ function makeEditable(element, fieldName, currentValue, productId) {
             input.appendChild(option);
         });
         input.style.fontSize = '14px';
-        input.style.padding = '6px';
     } else if (fieldName.startsWith('spec_')) {
         input = document.createElement('input');
         input.type = 'text';
-        input.value = currentValue;
-        input.style.fontSize = '14px';
-        input.style.width = '100%';
-        // Generic spec example
+        input.value = currentValue || '';
         input.placeholder = 'Ej: Pantalla: 6.1 pulgadas OLED, 2532 x 1170';
     }
     
-    input.style.border = '2px solid #00BCD4';
-    input.style.borderRadius = '6px';
-    input.style.padding = '8px';
-    input.style.fontFamily = 'inherit';
-    input.style.color = '#2D2D2D';
+    // Apply shared inline edit styling without changing layout dramatically
+    if (input.tagName === 'INPUT') {
+        input.classList.add('inline-edit-input');
+    } else if (input.tagName === 'SELECT') {
+        input.classList.add('inline-edit-select');
+    }
     
     element.innerHTML = '';
     element.appendChild(input);
     input.focus();
+    
+    // Auto-select existing value so typing replaces it immediately
+    if (typeof input.select === 'function' && input.value) {
+        setTimeout(() => input.select(), 0);
+    }
     
     // Save on blur or Enter
     const saveValue = () => {
@@ -81,11 +78,14 @@ function makeEditable(element, fieldName, currentValue, productId) {
             // Update the display
             if (fieldName === 'price' || fieldName === 'oldPrice') {
                 element.innerHTML = `<span class=\"product-price ${fieldName === 'oldPrice' ? 'old-price' : 'offer-price'}\">${parseInt(newValue).toLocaleString('es-PY')} PYG</span>`;
+                element.dataset.value = newValue;
                 element.classList.remove('placeholder-spec');
             } else if (fieldName === 'stock') {
                 element.innerHTML = newValue === 'Disponible' ? '<span style=\"color: #27AE60;\">✅ Disponible</span>' : '<span style=\"color: #e74c3c;\">❌ Agotado</span>';
+                element.dataset.value = newValue;
             } else {
                 element.textContent = newValue;
+                element.dataset.value = newValue;
                 element.classList.remove('placeholder-spec');
             }
             
