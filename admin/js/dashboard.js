@@ -38,7 +38,10 @@ async function loadProducts() {
     } catch (error) {
         console.error('Error loading products:', error);
         document.getElementById('productsGrid').innerHTML = 
-            '<p>Error cargando productos. Asegúrate de que el backend esté corriendo.</p>';
+            '<p>Error cargando productos. Verifica que la API esté disponible.</p>';
+        if (window.showToast) {
+            showToast('Error cargando productos. Verifica que la API esté disponible.', 'error');
+        }
     }
 }
 
@@ -61,11 +64,19 @@ async function deleteProduct(id) {
 
         if (!response.ok) throw new Error('Error al eliminar');
 
-        alert('✅ Producto eliminado correctamente');
+        if (window.showToast) {
+            showToast('✅ Producto eliminado correctamente', 'success');
+        } else {
+            alert('✅ Producto eliminado correctamente');
+        }
         loadProducts();
     } catch (error) {
         console.error('Error deleting product:', error);
-        alert('❌ Error al eliminar el producto');
+        if (window.showToast) {
+            showToast('❌ Error al eliminar el producto', 'error');
+        } else {
+            alert('❌ Error al eliminar el producto');
+        }
     }
 }
 
