@@ -235,19 +235,27 @@ body {
 
 .btn-secondary {
     padding: 10px 20px;
-    background: white;
-    color: #00BCD4;
-    border: 2px solid #00BCD4;
+    background: #FFFFFF;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.25s ease;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
 .btn-secondary:hover {
-    background: #00BCD4;
-    color: white;
+    background: var(--primary-color);
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 188, 212, 0.28);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
 .dashboard-content {
@@ -289,7 +297,17 @@ body {
     border: none;
     cursor: pointer;
     font-weight: 600;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
+}
+
+.btn-small:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-small:active {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 .btn-edit {

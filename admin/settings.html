@@ -249,7 +249,7 @@
             margin-bottom: 8px;
         }
         
-        .btn-add {
+.btn-add {
             background: #27AE60;
             color: white;
             border: none;
@@ -258,6 +258,13 @@
             cursor: pointer;
             font-size: 14px;
             margin-top: 10px;
+            transition: all 0.25s ease;
+        }
+        
+        .btn-add:hover {
+            background: #219150;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.35);
         }
         
         .btn-remove {
@@ -268,6 +275,13 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
+            transition: all 0.25s ease;
+        }
+
+        .btn-remove:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(231, 76, 60, 0.35);
         }
         
         .admin-nav {
@@ -320,7 +334,7 @@
             font-size: 14px;
         }
         
-        .btn-logout {
+.btn-logout {
             background: transparent;
             color: white;
             border: 2px solid var(--primary-color);
@@ -329,11 +343,13 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
         }
         
         .btn-logout:hover {
             background: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.35);
+            transform: translateY(-1px);
         }
     </style>
 </head>
