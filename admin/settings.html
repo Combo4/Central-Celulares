@@ -5,20 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuración - Central Celulares Admin</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/admin.css">
     <style>
-        :root {
-            --primary-color: #00BCD4;
-            --primary-hover: #00A8B8;
-            --header-bg: #231F20;
-            --text-dark: #2D2D2D;
-        }
-        
         body {
             background: #F5F5F5;
-            font-family: 'Inter', -apple-system, system-ui, sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
         }
         
         .settings-container {
@@ -348,19 +338,15 @@
     </style>
 </head>
 <body>
-    <nav class="admin-nav">
-        <div class="nav-content">
-            <div class="nav-left">
-                <h2>⚙️ Configuración del Sitio</h2>
-            </div>
-            <div class="nav-right">
-                <a href="dashboard.html" class="nav-link-btn">🏠 Dashboard</a>
-                <a href="products.html" class="nav-link-btn">📦 Productos</a>
-                <span id="userEmail" class="user-email"></span>
-                <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
-            </div>
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">⚙️ Configuración del Sitio</h1>
+        <div class="dashboard-actions">
+            <a href="dashboard.html">🏠 Dashboard</a>
+            <a href="products.html">📦 Productos</a>
+            <span id="userEmail" style="color: #CCC;"></span>
+            <button onclick="logout()" class="btn-secondary">Cerrar Sesión</button>
         </div>
-    </nav>
+    </div>
 
     <div class="settings-container">
         <aside class="settings-sidebar">
