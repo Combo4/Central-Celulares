@@ -1,4 +1,4 @@
-const API_BASE_URL_PRODUCTS = window.API_BASE_URL || 'http://localhost:3002';
+const PRODUCTS_API_BASE_URL = window.API_BASE_URL || 'http://localhost:3002';
 
 let allProducts = [];
 let currentPage = 1;
@@ -7,7 +7,7 @@ let itemsPerPage = 12; // Default value, will be overridden by config
 
 async function loadConfig() {
     try {
-        const response = await fetch(`${API_BASE_URL_PRODUCTS}/api/config`);
+        const response = await fetch(`${PRODUCTS_API_BASE_URL}/api/config`);
         const apiConfig = await response.json();
         
         config = {
@@ -61,7 +61,7 @@ function getCategoryFromURL() {
 
 async function loadProducts() {
     try {
-        const response = await fetch(`${API_BASE_URL_PRODUCTS}/api/products`);
+        const response = await fetch(`${PRODUCTS_API_BASE_URL}/api/products`);
         let products = await response.json();
         
         products = products.map(p => ({
@@ -188,7 +188,7 @@ function sortProducts(sortType) {
 }
 
 function searchProducts(searchTerm) {
-    fetch(`${API_BASE_URL_PRODUCTS}/api/products`)
+    fetch(`${PRODUCTS_API_BASE_URL}/api/products`)
         .then(response => response.json())
         .then(products => {
             products = products.map(p => ({
@@ -273,7 +273,7 @@ async function loadSocials() {
     }
     
     try {
-        const response = await fetch(`${API_BASE_URL_PRODUCTS}/api/config/socials_data`);
+        const response = await fetch(`${PRODUCTS_API_BASE_URL}/api/config/socials_data`);
         const socials = await response.json();
         displaySocials(socials);
     } catch (error) {
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (searchTerm) {
                     searchProducts(searchTerm);
                 } else {
-                    fetch(`${API_BASE_URL_PRODUCTS}/api/products`)
+                    fetch(`${PRODUCTS_API_BASE_URL}/api/products`)
                         .then(response => response.json())
                         .then(products => {
                             allProducts = products.map(p => ({

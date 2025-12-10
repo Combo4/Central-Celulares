@@ -1,8 +1,8 @@
-const API_BASE_URL = window.API_BASE_URL || 'http://localhost:3002';
+const THEME_API_BASE_URL = window.API_BASE_URL || 'http://localhost:3002';
 
 async function loadTheme() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/config/theme`);
+        const response = await fetch(`${THEME_API_BASE_URL}/api/config/theme`);
         const theme = await response.json();
         
         if (!theme || !theme.current) {
