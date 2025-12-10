@@ -4,6 +4,14 @@
     box-sizing: border-box;
 }
 
+:root {
+    --primary-color: #00BCD4;
+    --primary-hover: #00A8B8;
+    --secondary-color: #FF9800;
+    --header-bg: #231F20;
+    --header-actions-bg: #3A3A3A;
+}
+
 body {
     font-family: 'Inter', -apple-system, system-ui, sans-serif;
     background: linear-gradient(135deg, #00BCD4 0%, #00A8B8 100%);
@@ -194,23 +202,35 @@ body {
 }
 
 .dashboard-header {
-    background: white;
-    border-bottom: 1px solid #E0E0E0;
+    background: var(--header-bg);
+    border-bottom: 1px solid #111;
     padding: 16px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .dashboard-title {
     font-size: 24px;
     font-weight: 700;
-    color: #2D2D2D;
+    color: #FFFFFF;
 }
 
 .dashboard-actions {
     display: flex;
     gap: 12px;
+    align-items: center;
+}
+
+.dashboard-actions a {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.dashboard-actions a:hover {
+    color: var(--primary-color);
 }
 
 .btn-secondary {

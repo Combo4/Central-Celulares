@@ -1,4 +1,14 @@
-const API_URL = 'http://localhost:3002/api';
+const API_URL = (function () {
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+        return 'http://localhost:3002/api';
+    }
+    return 'https://endless-kevina-central-celulares-8eb37001.koyeb.app/api';
+})();
+
+async function getAuthToken() {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.access_token;
+}
 
 async function loadProducts() {
     try {
@@ -33,12 +43,29 @@ async function loadProducts() {
 }
 
 function editProduct(id) {
-    alert(`Editar producto ${id} - Función en desarrollo`);
+    // Reuse full edit page used in products manager
+    window.location.href = `edit-product.html?id=${id}`;
 }
 
-function deleteProduct(id) {
-    if (confirm('¿Estás seguro de eliminar este producto?')) {
-        alert(`Eliminar producto ${id} - Función en desarrollo`);
+async function deleteProduct(id) {
+    if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+
+    try {
+        const token = await getAuthToken();
+        const response = await fetch(`${API_URL}/products/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) throw new Error('Error al eliminar');
+
+        alert('✅ Producto eliminado correctamente');
+        loadProducts();
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('❌ Error al eliminar el producto');
     }
 }
 

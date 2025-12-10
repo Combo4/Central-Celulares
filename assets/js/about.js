@@ -1,6 +1,8 @@
+const ABOUT_API_BASE_URL = window.API_BASE_URL || 'http://localhost:3002';
+
 async function loadAboutContent() {
     try {
-        const response = await fetch('http://localhost:3002/api/config/aboutUs');
+        const response = await fetch(`${ABOUT_API_BASE_URL}/api/config/aboutUs`);
         const aboutData = await response.json();
         
         if (!aboutData) {
@@ -94,7 +96,7 @@ function getSocialIcon(iconName) {
 
 async function loadSocialLinks() {
     try {
-        const response = await fetch('http://localhost:3002/api/config/socials_data');
+        const response = await fetch(`${ABOUT_API_BASE_URL}/api/config/socials_data`);
         const socials = await response.json();
         
         const socialLinksContainer = document.getElementById('social-links');

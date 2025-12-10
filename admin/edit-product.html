@@ -201,21 +201,44 @@
     <script src="js/auth.js"></script>
     <script src="js/edit-inline.js"></script>
     <script>
-        const API_URL = 'http://localhost:3002/api';
+        const API_URL = (function () {
+            if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+                return 'http://localhost:3002/api';
+            }
+            return 'https://endless-kevina-central-celulares-8eb37001.koyeb.app/api';
+        })();
+
         let currentProduct = null;
         let originalProduct = null;
+        let isNewProduct = false;
         window.productChanges = {};
         
         async function loadProduct() {
             const urlParams = new URLSearchParams(window.location.search);
             const productId = urlParams.get('id');
-            
-            if (!productId) {
-                alert('No se especificó ID de producto');
-                window.location.href = 'products.html';
+
+            // Create mode when id is missing or explicitly "new"
+            if (!productId || productId === 'new') {
+                isNewProduct = true;
+
+                currentProduct = {
+                    id: null,
+                    name: 'Nuevo Producto',
+                    price: 0,
+                    old_price: null,
+                    category: 'Apple',
+                    in_stock: true,
+                    image: null,
+                    badges: [],
+                    specifications: []
+                };
+                originalProduct = JSON.parse(JSON.stringify(currentProduct));
+
+                displayProduct(currentProduct);
+                initializeEditMode();
                 return;
             }
-            
+
             try {
                 const response = await fetch(`${API_URL}/products/${productId}`);
                 const product = await response.json();
@@ -332,9 +355,12 @@
                 if (window.productChanges.image) {
                     formData.append('image', window.productChanges.image);
                 }
+
+                const url = isNewProduct ? `${API_URL}/products` : `${API_URL}/products/${currentProduct.id}`;
+                const method = isNewProduct ? 'POST' : 'PUT';
                 
-                const response = await fetch(`${API_URL}/products/${currentProduct.id}`, {
-                    method: 'PUT',
+                const response = await fetch(url, {
+                    method,
                     headers: {
                         'Authorization': `Bearer ${token}`
                     },
@@ -342,13 +368,18 @@
                 });
                 
                 if (!response.ok) throw new Error('Error al guardar');
-                
-                alert('✅ Producto actualizado correctamente');
+
+                alert(isNewProduct ? '✅ Producto creado correctamente' : '✅ Producto actualizado correctamente');
                 window.productChanges = {};
                 document.getElementById('saveBar').classList.remove('active');
-                
-                // Reload product
-                await loadProduct();
+
+                if (isNewProduct) {
+                    // After creating, go back to products list
+                    window.location.href = 'products.html';
+                } else {
+                    // Reload product
+                    await loadProduct();
+                }
             } catch (error) {
                 console.error('Error saving:', error);
                 alert('❌ Error al guardar cambios');
