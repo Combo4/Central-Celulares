@@ -16,21 +16,6 @@ async function loadNavigation() {
         navMenu.innerHTML = '';
         
         navigation.items.forEach(item => {
-            // Temporary patch: normalize Servicios links if backend config is still using placeholder anchors
-            if (item.label === 'Servicios' && Array.isArray(item.dropdown) && item.dropdown.length) {
-                const labels = item.dropdown.map(d => d.label);
-                const looksLikeOldConfig = labels.includes('Reparación') || labels.includes('Accesorios');
-                if (looksLikeOldConfig) {
-                    item.url = 'services.html';
-                    item.dropdown = [
-                        { label: 'Cambio de pantalla', url: 'services.html#service-0' },
-                        { label: 'Reparación de puerto de carga', url: 'services.html#service-1' },
-                        { label: 'Cambio de batería', url: 'services.html#service-2' },
-                        { label: 'Accesorios y cargadores', url: 'services.html#service-3' },
-                        { label: 'Otros servicios', url: 'services.html#service-4' }
-                    ];
-                }
-            }
             if (item.spacer) {
                 const spacer = document.createElement('span');
                 spacer.className = 'nav-spacer';
