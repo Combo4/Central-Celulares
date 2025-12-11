@@ -1,14 +1,58 @@
 const SERVICES_API_BASE_URL = window.API_BASE_URL || 'http://localhost:3002';
 
+const DEFAULT_SERVICES_CONFIG = {
+    title: 'Servicios',
+    subtitle: 'Reparaciones y soluciones para tu dispositivo',
+    description: 'En Central Celulares ofrecemos diferentes servicios para que tu teléfono siempre esté como nuevo. Trabajamos con repuestos de calidad y técnicos especializados.',
+    sections: [
+        {
+            icon: '📱',
+            title: 'Cambio de pantalla',
+            content: 'Reemplazamos pantallas rotas o dañadas para la mayoría de las marcas y modelos. Utilizamos repuestos de alta calidad y garantizamos un resultado limpio y funcional.'
+        },
+        {
+            icon: '🔌',
+            title: 'Reparación de puerto de carga',
+            content: 'Si tu teléfono ya no carga bien o hay que mover el cable para que funcione, revisamos y reparamos el puerto de carga o lo reemplazamos si es necesario.'
+        },
+        {
+            icon: '🔋',
+            title: 'Cambio de batería',
+            content: '¿La batería ya no dura como antes? Cambiamos baterías desgastadas para que vuelvas a disfrutar de una buena autonomía durante todo el día.'
+        },
+        {
+            icon: '🎧',
+            title: 'Accesorios y cargadores',
+            content: 'Contamos con cargadores, cables, fundas, protectores de pantalla, auriculares y más accesorios originales y de buena calidad para tu dispositivo.'
+        },
+        {
+            icon: '🛠️',
+            title: 'Otros servicios',
+            content: 'También ofrecemos limpieza interna, cambio de micrófono y parlante, actualización de software y revisión general del equipo.'
+        }
+    ]
+};
+
 async function loadServicesContent() {
+    let services;
+
     try {
         const response = await fetch(`${SERVICES_API_BASE_URL}/api/config/services`);
-        const services = await response.json();
-
-        if (!services) {
-            console.warn('No services configuration found');
-            return;
+        if (!response.ok) {
+            console.warn('Services config not found in API, using defaults');
+            services = DEFAULT_SERVICES_CONFIG;
+        } else {
+            services = await response.json();
         }
+    } catch (error) {
+        console.error('Error loading services content from API, using defaults:', error);
+        services = DEFAULT_SERVICES_CONFIG;
+    }
+
+    if (!services) {
+        console.warn('No services configuration available');
+        return;
+    }
 
         const titleEl = document.querySelector('.about-title');
         const subtitleEl = document.querySelector('.about-subtitle');
