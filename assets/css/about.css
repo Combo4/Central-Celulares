@@ -87,6 +87,29 @@ html {
     margin-bottom: 3rem;
 }
 
+/* Services page: 5 cards per row on large screens */
+.services-features {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+@media (max-width: 1200px) {
+    .services-features {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .services-features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .services-features {
+        grid-template-columns: 1fr;
+    }
+}
+
 .feature-card {
     background: white;
     padding: 2.5rem 2rem;

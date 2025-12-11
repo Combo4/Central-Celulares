@@ -23,9 +23,10 @@ async function loadServicesContent() {
             featuresSection.innerHTML = '';
 
             if (Array.isArray(services.sections)) {
-                services.sections.forEach(section => {
+                services.sections.forEach((section, index) => {
                     const card = document.createElement('div');
                     card.className = 'feature-card';
+                    card.id = `service-${index}`;
                     card.innerHTML = `
                         <span class="feature-icon">${section.icon || ''}</span>
                         <h3 class="feature-title">${section.title || ''}</h3>

@@ -64,7 +64,7 @@
   "aboutUs": {
     "title": "Sobre Nosotros",
     "subtitle": "Tu tienda de confianza en Paraguay",
-    "description": "En Central Celulares, nos dedicamos a ofrecer los mejores dispositivos móviles con garantía y servicio de calidad. Con años de experiencia en el mercado paraguayo, nos hemos convertido en la opción preferida para quienes buscan tecnología de primera.",
+    "description": "¡Bienvenidos a Central Celulares!\n\nCon más de 20 años de experiencia en el mercado, Central Celulares se ha establecido como un referente en la venta de celulares, accesorios y servicios en Caaguazú. Ubicados en la avenida Bernardino Caballero esquina Roberto L Petit, nuestro equipo está comprometido con brindar la mejor atención y los mejores productos a nuestros clientes.\n\nNuestra oferta:\n\n• Venta de celulares de las mejores marcas\n• Accesorios y repuestos para todos los modelos\n• Servicios técnicos especializados\n• Venta de productos informáticos\n\n¿Por qué elegirnos?\n\n• Más de 20 años de experiencia en el mercado\n• Personal capacitado y atento\n• Excelentes precios y promociones\n\n¡Visítanos en nuestra tienda o contáctanos en línea! Estamos aquí para ayudarte a encontrar el producto perfecto para ti.",
     "sections": [
       {
         "icon": "📱",
@@ -160,8 +160,11 @@
         "label": "Servicios",
         "url": "services.html",
         "dropdown": [
-          {"label": "Reparaciones", "url": "services.html"},
-          {"label": "Consultas y presupuestos", "url": "services.html#contact-section"}
+          {"label": "Cambio de pantalla", "url": "services.html#service-0"},
+          {"label": "Reparación de puerto de carga", "url": "services.html#service-1"},
+          {"label": "Cambio de batería", "url": "services.html#service-2"},
+          {"label": "Accesorios y cargadores", "url": "services.html#service-3"},
+          {"label": "Otros servicios", "url": "services.html#service-4"}
         ]
       },
       {
