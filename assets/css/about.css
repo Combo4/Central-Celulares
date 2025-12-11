@@ -110,6 +110,12 @@ html {
     }
 }
 
+/* Ensure services cards are always visible (no initial fade-out) */
+.services-features.fade-in-section {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
 .feature-card {
     background: white;
     padding: 2.5rem 2rem;
