@@ -110,8 +110,8 @@ html {
     }
 }
 
-/* Ensure services cards are always visible (no initial fade-out) */
-.services-features.fade-in-section {
+/* Ensure services page sections are always visible (no initial fade-out) */
+body.services-page .fade-in-section {
     opacity: 1 !important;
     transform: translateY(0) !important;
 }
