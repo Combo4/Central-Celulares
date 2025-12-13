@@ -62,9 +62,24 @@ if (document.getElementById('loginForm')) {
         }
 
         setLoading(true);
-        showMessage('Enviando enlace y código...', 'info');
+        showMessage('Verificando acceso...', 'info');
 
         try {
+            // Step 1: Check if email is authorized as admin
+            const { data: adminCheck, error: adminError } = await supabase
+                .from('admin_users')
+                .select('email, is_active')
+                .eq('email', email)
+                .eq('is_active', true)
+                .single();
+
+            if (adminError || !adminCheck) {
+                throw new Error('Este correo no está autorizado para acceder al panel de administración.');
+            }
+
+            // Step 2: Email is authorized, send OTP
+            showMessage('Enviando enlace y código...', 'info');
+            
             const currentUrl = window.location.href.replace('login.html', 'dashboard.html');
             
             const { data, error } = await supabase.auth.signInWithOtp({
@@ -83,10 +98,19 @@ if (document.getElementById('loginForm')) {
             
         } catch (error) {
             console.error('Login error:', error);
-            showMessage(
-                `❌ Error: ${error.message}\n\nVerifica que tu correo esté autorizado como administrador.`,
-                'error'
-            );
+            
+            // Check if it's an admin authorization error
+            if (error.message.includes('no está autorizado')) {
+                showMessage(
+                    `🚫 Acceso Denegado\n\nEste correo no está clasificado para iniciar sesión.\n\nSolo administradores autorizados pueden acceder al panel.`,
+                    'error'
+                );
+            } else {
+                showMessage(
+                    `❌ Error: ${error.message}\n\nSi eres administrador, contacta al soporte técnico.`,
+                    'error'
+                );
+            }
         } finally {
             setLoading(false);
         }
@@ -112,9 +136,24 @@ if (document.getElementById('loginForm')) {
             }
 
             setLoading(true);
-            showMessage('Verificando código...', 'info');
+            showMessage('Verificando acceso...', 'info');
 
             try {
+                // Step 1: Check if email is authorized as admin
+                const { data: adminCheck, error: adminError } = await supabase
+                    .from('admin_users')
+                    .select('email, is_active')
+                    .eq('email', email)
+                    .eq('is_active', true)
+                    .single();
+
+                if (adminError || !adminCheck) {
+                    throw new Error('Este correo no está autorizado para acceder al panel de administración.');
+                }
+
+                // Step 2: Email is authorized, verify code
+                showMessage('Verificando código...', 'info');
+                
                 const { data, error } = await supabase.auth.verifyOtp({
                     email,
                     token: code,
@@ -129,10 +168,19 @@ if (document.getElementById('loginForm')) {
 
             } catch (error) {
                 console.error('Code login error:', error);
-                showMessage(
-                    `❌ Código inválido o expirado: ${error.message}`,
-                    'error'
-                );
+                
+                // Check if it's an admin authorization error
+                if (error.message.includes('no está autorizado')) {
+                    showMessage(
+                        `🚫 Acceso Denegado\n\nEste correo no está clasificado para iniciar sesión.\n\nSolo administradores autorizados pueden acceder al panel.`,
+                        'error'
+                    );
+                } else {
+                    showMessage(
+                        `❌ Código inválido o expirado: ${error.message}`,
+                        'error'
+                    );
+                }
             } finally {
                 setLoading(false);
             }
@@ -153,6 +201,29 @@ async function checkAuth() {
             window.location.href = '/admin/login.html';
         }
         return null;
+    }
+    
+    // Additional check: Verify user is an active admin
+    try {
+        const { data: adminCheck, error } = await supabase
+            .from('admin_users')
+            .select('email, is_active')
+            .eq('email', session.user.email)
+            .eq('is_active', true)
+            .single();
+        
+        if (error || !adminCheck) {
+            // User is authenticated but not an active admin
+            console.error('User is not an active admin');
+            await supabase.auth.signOut();
+            if (!window.location.pathname.includes('login.html')) {
+                alert('Tu cuenta no tiene permisos de administrador. Contacta al soporte.');
+                window.location.href = '/admin/login.html';
+            }
+            return null;
+        }
+    } catch (err) {
+        console.error('Error checking admin status:', err);
     }
     
     if (window.location.pathname.includes('login.html')) {
