@@ -82,13 +82,14 @@ CREATE POLICY "Anyone can view products"
     ON public.products FOR SELECT
     USING (true);
 
+-- Note: Using email from JWT instead of auth_user_id for location independence
 CREATE POLICY "Admins can insert products"
     ON public.products FOR INSERT
     TO authenticated
     WITH CHECK (
         EXISTS (
             SELECT 1 FROM public.admin_users
-            WHERE auth_user_id = auth.uid() AND is_active = true
+            WHERE email = auth.jwt()->>'email' AND is_active = true
         )
     );
 
@@ -98,7 +99,7 @@ CREATE POLICY "Admins can update products"
     USING (
         EXISTS (
             SELECT 1 FROM public.admin_users
-            WHERE auth_user_id = auth.uid() AND is_active = true
+            WHERE email = auth.jwt()->>'email' AND is_active = true
         )
     );
 
@@ -108,7 +109,7 @@ CREATE POLICY "Admins can delete products"
     USING (
         EXISTS (
             SELECT 1 FROM public.admin_users
-            WHERE auth_user_id = auth.uid() AND is_active = true
+            WHERE email = auth.jwt()->>'email' AND is_active = true
         )
     );
 
@@ -134,7 +135,7 @@ CREATE POLICY "Admins can manage site config"
     USING (
         EXISTS (
             SELECT 1 FROM public.admin_users
-            WHERE auth_user_id = auth.uid() AND is_active = true
+            WHERE email = auth.jwt()->>'email' AND is_active = true
         )
     );
 
@@ -145,7 +146,7 @@ CREATE POLICY "Admins can view audit log"
     USING (
         EXISTS (
             SELECT 1 FROM public.admin_users
-            WHERE auth_user_id = auth.uid() AND is_active = true
+            WHERE email = auth.jwt()->>'email' AND is_active = true
         )
     );
 
