@@ -237,7 +237,8 @@ async function checkAuth() {
 async function logout() {
     try {
         await supabase.auth.signOut();
-        window.location.href = 'login.html';
+        // Use replace to clear hash and avoid back button issues
+        window.location.replace('login.html');
     } catch (error) {
         console.error('Logout error:', error);
         alert('Error al cerrar sesión');
