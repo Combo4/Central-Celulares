@@ -244,6 +244,9 @@ async function logout() {
     }
 }
 
+// Expose logout to global scope for inline onclick handlers
+window.logout = logout;
+
 if (window.location.pathname.includes('dashboard.html')) {
     checkAuth().then(session => {
         if (!session) return;
