@@ -41,7 +41,7 @@ async function handleRedirectCallback() {
         });
         
         if (!error) {
-            window.location.href = '/admin/dashboard.html';
+            window.location.href = 'dashboard.html';
         }
     }
 }
@@ -198,7 +198,7 @@ async function checkAuth() {
     
     if (!session) {
         if (!window.location.pathname.includes('login.html')) {
-            window.location.href = '/admin/login.html';
+            window.location.href = 'login.html';
         }
         return null;
     }
@@ -218,7 +218,7 @@ async function checkAuth() {
             await supabase.auth.signOut();
             if (!window.location.pathname.includes('login.html')) {
                 alert('Tu cuenta no tiene permisos de administrador. Contacta al soporte.');
-                window.location.href = '/admin/login.html';
+                window.location.href = 'login.html';
             }
             return null;
         }
@@ -227,7 +227,7 @@ async function checkAuth() {
     }
     
     if (window.location.pathname.includes('login.html')) {
-        window.location.href = '/admin/dashboard.html';
+        window.location.href = 'dashboard.html';
         return null;
     }
     
@@ -237,7 +237,7 @@ async function checkAuth() {
 async function logout() {
     try {
         await supabase.auth.signOut();
-        window.location.href = '/admin/login.html';
+        window.location.href = 'login.html';
     } catch (error) {
         console.error('Logout error:', error);
         alert('Error al cerrar sesión');
@@ -261,11 +261,11 @@ if (!DISABLE_AUTH_CHECK) {
         
         if (event === 'SIGNED_IN') {
             if (window.location.pathname.includes('login.html')) {
-                window.location.href = '/admin/dashboard.html';
+                window.location.href = 'dashboard.html';
             }
         } else if (event === 'SIGNED_OUT') {
             if (!window.location.pathname.includes('login.html')) {
-                window.location.href = '/admin/login.html';
+                window.location.href = 'login.html';
             }
         }
     });
