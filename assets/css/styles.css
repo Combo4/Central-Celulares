@@ -1,3 +1,4 @@
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -474,6 +475,33 @@ body {
 .footer-info {
     color: #666;
     font-size: 14px;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    font-size: 16px;
+    color: #666;
+    grid-column: 1/-1;
+}
+
+.loading-spinner::before {
+    content: '';
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 @media (max-width: 1200px) {

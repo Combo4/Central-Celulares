@@ -24,6 +24,11 @@
   "socials": {
     "showInFooter": true
   },
+  "contact": {
+    "whatsapp": "595XXXXXXXXX",
+    "phone": "+595 21 123 4567",
+    "email": "info@centralcelulares.com"
+  },
   "theme": {
     "current": "cyan",
     "logoBackground": "#231F20",

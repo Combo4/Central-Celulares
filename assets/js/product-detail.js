@@ -1,12 +1,21 @@
 const PRODUCT_DETAIL_API_BASE_URL = window.API_BASE_URL || 'http://localhost:3002';
+let siteConfig = {};
 
-function getProductIdFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('id'));
+/**
+ * Load site configuration from API
+ */
+async function loadSiteConfig() {
+    try {
+        const response = await fetch(`${PRODUCT_DETAIL_API_BASE_URL}/api/config`);
+        siteConfig = await response.json();
+    } catch (error) {
+        console.warn('Error loading config, using defaults:', error);
+        siteConfig = DEFAULT_CONFIG;
+    }
 }
 
 async function loadProductDetails() {
-    const productId = getProductIdFromURL();
+    const productId = getURLParameter('id') ? parseInt(getURLParameter('id')) : null;
     
     if (!productId) {
         window.location.href = 'index.html';
@@ -17,17 +26,8 @@ async function loadProductDetails() {
         const response = await fetch(`${PRODUCT_DETAIL_API_BASE_URL}/api/products`);
         let products = await response.json();
         
-        products = products.map(p => ({
-            id: p.id,
-            name: p.name,
-            price: p.price,
-            oldPrice: p.old_price,
-            image: p.image,
-            inStock: p.in_stock,
-            category: p.category,
-            badges: p.badges ? p.badges.map(text => ({ type: 'stock', text })) : [],
-            specifications: p.specifications || []
-        }));
+        // Use mapProduct utility
+        products = products.map(p => mapProduct(p));
         
         const product = products.find(p => p.id === productId);
         
@@ -138,9 +138,9 @@ function displaySpecifications(product) {
 
 function setupWhatsAppButton(product) {
     const whatsappBtn = document.getElementById('whatsapp-btn');
-    const whatsappNumber = '595XXXXXXXXX'; // Update with actual WhatsApp number
-    const message = encodeURIComponent(`Hola, me interesa ${product.name}`);
-    const whatsappLink = `https://wa.me/${whatsappNumber}?text=${message}`;
+    const whatsappNumber = siteConfig.contact?.whatsapp || '595XXXXXXXXX';
+    const message = `Hola, me interesa ${product.name}`;
+    const whatsappLink = formatWhatsAppURL(whatsappNumber, message);
     
     whatsappBtn.onclick = () => {
         window.open(whatsappLink, '_blank');
@@ -180,27 +180,37 @@ function createRelatedProductCard(product) {
         window.location.href = `product.html?id=${product.id}`;
     };
     
-    const formattedPrice = product.price.toLocaleString('es-PY');
-    const formattedOldPrice = product.oldPrice ? product.oldPrice.toLocaleString('es-PY') : null;
+    // Add keyboard accessibility
+    card.tabIndex = 0;
+    card.setAttribute('role', 'button');
+    card.onkeydown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            window.location.href = `product.html?id=${product.id}`;
+        }
+    };
     
-    const imageHTML = product.image 
-        ? `<img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-           <div class="product-image-placeholder" style="display:none;">📱</div>`
-        : `<div class="product-image-placeholder">📱</div>`;
+    const locale = siteConfig.site?.locale || DEFAULT_CONFIG.site.locale;
+    const currency = siteConfig.site?.currency || DEFAULT_CONFIG.site.currency;
+    const placeholder = siteConfig.display?.productImagePlaceholder || DEFAULT_CONFIG.display.productImagePlaceholder;
     
-    const oldPriceHTML = formattedOldPrice 
-        ? `<span class="old-price">${formattedOldPrice} PYG</span>`
+    const imageHTML = createProductImage(product.image, product.name, placeholder);
+    
+    const oldPriceHTML = product.oldPrice 
+        ? `<span class="old-price">${formatPrice(product.oldPrice, locale, currency)}</span>`
         : '';
+    
+    const productNameSafe = sanitizeHTML(product.name);
     
     card.innerHTML = `
         <div class="product-image-wrapper">
             ${imageHTML}
         </div>
         <div class="product-info">
-            <h3 class="product-title">${product.name}</h3>
+            <h3 class="product-title">${productNameSafe}</h3>
             <div class="product-pricing">
                 ${oldPriceHTML}
-                <span class="product-price">${formattedPrice} PYG</span>
+                <span class="product-price">${formatPrice(product.price, locale, currency)}</span>
             </div>
         </div>
     `;
@@ -261,7 +271,8 @@ function setupContactButton() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadSiteConfig();
     loadProductDetails();
     setupContactButton();
 });

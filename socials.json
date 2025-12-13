@@ -15,6 +15,7 @@
     "name": "WhatsApp",
     "url": "https://wa.me/595XXXXXXXXX",
     "icon": "whatsapp",
-    "enabled": true
+    "enabled": true,
+    "note": "WhatsApp number should be updated in config.json contact.whatsapp"
   }
 ]

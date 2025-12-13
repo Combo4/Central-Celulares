@@ -1,6 +1,7 @@
 const PRODUCTS_API_BASE_URL = window.API_BASE_URL || 'http://localhost:3002';
 
 let allProducts = [];
+let cachedProducts = []; // Cache all products to avoid re-fetching
 let currentPage = 1;
 let config = {};
 let itemsPerPage = 12; // Default value, will be overridden by config
@@ -11,12 +12,13 @@ async function loadConfig() {
         const apiConfig = await response.json();
         
         config = {
-            pagination: apiConfig.pagination || { itemsPerPage: 8 },
-            layout: apiConfig.layout || { columnsPerRow: 4 },
-            site: apiConfig.site || { locale: 'es-PY', currency: 'PYG' },
-            display: apiConfig.display || { showOldPrices: true, productImagePlaceholder: '📱' },
-            search: apiConfig.search || { minCharacters: 2, debounceTime: 300 },
-            socials: apiConfig.socials || { showInFooter: true }
+            pagination: apiConfig.pagination || DEFAULT_CONFIG.pagination,
+            layout: apiConfig.layout || DEFAULT_CONFIG.layout,
+            site: apiConfig.site || DEFAULT_CONFIG.site,
+            display: apiConfig.display || DEFAULT_CONFIG.display,
+            search: apiConfig.search || DEFAULT_CONFIG.search,
+            socials: apiConfig.socials || DEFAULT_CONFIG.socials,
+            contact: apiConfig.contact || {}
         };
         
         itemsPerPage = config.pagination.itemsPerPage;
@@ -26,15 +28,8 @@ async function loadConfig() {
         }
     } catch (error) {
         console.warn('Error loading config from API, using defaults:', error);
-        config = {
-            pagination: { itemsPerPage: 8 },
-            layout: { columnsPerRow: 4 },
-            site: { locale: 'es-PY', currency: 'PYG' },
-            display: { showOldPrices: true, productImagePlaceholder: '📱' },
-            search: { minCharacters: 2, debounceTime: 300 },
-            socials: { showInFooter: true }
-        };
-        itemsPerPage = 8;
+        config = DEFAULT_CONFIG;
+        itemsPerPage = DEFAULT_CONFIG.pagination.itemsPerPage;
     }
 }
 
@@ -71,22 +66,16 @@ function getConditionFromURL() {
 }
 
 async function loadProducts() {
+    const productGrid = document.getElementById('product-grid');
+    showLoading(productGrid, MESSAGES.loading);
+    
     try {
         const response = await fetch(`${PRODUCTS_API_BASE_URL}/api/products`);
         let products = await response.json();
         
-        products = products.map(p => ({
-            id: p.id,
-            name: p.name,
-            price: p.price,
-            oldPrice: p.old_price,
-            image: p.image,
-            inStock: p.in_stock,
-            category: p.category,
-            condition: p.condition || 'new',
-            badges: p.badges ? p.badges.map(text => ({ type: 'stock', text })) : [],
-            specifications: p.specifications || []
-        }));
+        // Map and cache products
+        products = products.map(p => mapProduct(p));
+        cachedProducts = products;
 
         const category = getCategoryFromURL();
         const condition = getConditionFromURL();
@@ -114,7 +103,7 @@ async function loadProducts() {
         
         if (allProducts.length === 0) {
             document.getElementById('product-grid').innerHTML = 
-                '<p style="grid-column: 1/-1; text-align: center; color: #666; padding: 2rem;">No hay productos en esta categoría.</p>';
+                `<p style="grid-column: 1/-1; text-align: center; color: #666; padding: 2rem;">${MESSAGES.noProducts}</p>`;
             document.querySelector('.pagination').style.display = 'none';
         } else {
             displayPage(1);
@@ -122,7 +111,7 @@ async function loadProducts() {
     } catch (error) {
         console.error('Error loading products:', error);
         document.getElementById('product-grid').innerHTML = 
-            '<p style="grid-column: 1/-1; text-align: center; color: #666;">Error loading products. Please refresh the page.</p>';
+            `<p style="grid-column: 1/-1; text-align: center; color: #666;">${MESSAGES.errorLoading}</p>`;
     }
 }
 
@@ -154,33 +143,41 @@ function createProductCard(product) {
         window.location.href = `product.html?id=${product.id}`;
     };
     
+    // Add keyboard accessibility
+    card.tabIndex = 0;
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', `Ver detalles de ${product.name}`);
+    card.onkeydown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            window.location.href = `product.html?id=${product.id}`;
+        }
+    };
+    
     card.style.cursor = 'pointer';
     
-    const locale = config.site?.locale || 'es-PY';
-    const currency = config.site?.currency || 'PYG';
-    const formattedPrice = product.price.toLocaleString(locale);
-    const formattedOldPrice = product.oldPrice ? product.oldPrice.toLocaleString(locale) : null;
+    const locale = config.site?.locale || DEFAULT_CONFIG.site.locale;
+    const currency = config.site?.currency || DEFAULT_CONFIG.site.currency;
+    const placeholder = config.display?.productImagePlaceholder || DEFAULT_CONFIG.display.productImagePlaceholder;
     
-    const placeholder = config.display?.productImagePlaceholder || '📱';
-    const imageHTML = product.image 
-        ? `<img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-           <div class="product-image-placeholder" style="display:none;">${placeholder}</div>`
-        : `<div class="product-image-placeholder">${placeholder}</div>`;
+    const imageHTML = createProductImage(product.image, product.name, placeholder);
     
     const showOldPrices = config.display?.showOldPrices !== false;
-    const oldPriceHTML = (formattedOldPrice && showOldPrices)
-        ? `<span class="old-price">${formattedOldPrice} ${currency}</span>`
+    const oldPriceHTML = (product.oldPrice && showOldPrices)
+        ? `<span class="old-price">${formatPrice(product.oldPrice, locale, currency)}</span>`
         : '';
+    
+    const productNameSafe = sanitizeHTML(product.name);
     
     card.innerHTML = `
         <div class="product-image-wrapper">
             ${imageHTML}
         </div>
         <div class="product-info">
-            <h3 class="product-title">${product.name}</h3>
+            <h3 class="product-title">${productNameSafe}</h3>
             <div class="product-pricing">
                 ${oldPriceHTML}
-                <span class="product-price">${formattedPrice} ${currency}</span>
+                <span class="product-price">${formatPrice(product.price, locale, currency)}</span>
             </div>
         </div>
     `;
@@ -210,35 +207,23 @@ function sortProducts(sortType) {
 }
 
 function searchProducts(searchTerm) {
-    fetch(`${PRODUCTS_API_BASE_URL}/api/products`)
-        .then(response => response.json())
-        .then(products => {
-            products = products.map(p => ({
-                id: p.id,
-                name: p.name,
-                price: p.price,
-                oldPrice: p.old_price,
-                image: p.image,
-                inStock: p.in_stock,
-                category: p.category,
-                badges: p.badges ? p.badges.map(text => ({ type: 'stock', text })) : [],
-                specifications: p.specifications || []
-            }));
-            
-            const filtered = products.filter(product => 
-                product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.category.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            
-            if (filtered.length === 0) {
-                document.getElementById('product-grid').innerHTML = 
-                    '<p style="grid-column: 1/-1; text-align: center; color: #666; padding: 2rem;">No se encontraron productos con "' + searchTerm + '"</p>';
-                document.querySelector('.pagination').style.display = 'none';
-            } else {
-                allProducts = filtered;
-                displayPage(1);
-            }
-        });
+    // Use cached products instead of re-fetching
+    const productsToSearch = cachedProducts.length > 0 ? cachedProducts : allProducts;
+    
+    const searchLower = sanitizeHTML(searchTerm).toLowerCase();
+    const filtered = productsToSearch.filter(product => 
+        product.name.toLowerCase().includes(searchLower) ||
+        (product.category && product.category.toLowerCase().includes(searchLower))
+    );
+    
+    if (filtered.length === 0) {
+        document.getElementById('product-grid').innerHTML = 
+            `<p style="grid-column: 1/-1; text-align: center; color: #666; padding: 2rem;">${MESSAGES.noSearchResults} "${sanitizeHTML(searchTerm)}"</p>`;
+        document.querySelector('.pagination').style.display = 'none';
+    } else {
+        allProducts = filtered;
+        displayPage(1);
+    }
 }
 
 function updatePagination() {
@@ -371,26 +356,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
+                e.preventDefault();
                 const searchTerm = searchInput.value.trim();
                 if (searchTerm) {
                     searchProducts(searchTerm);
                 } else {
-                    fetch(`${PRODUCTS_API_BASE_URL}/api/products`)
-                        .then(response => response.json())
-                        .then(products => {
-                            allProducts = products.map(p => ({
-                                id: p.id,
-                                name: p.name,
-                                price: p.price,
-                                oldPrice: p.old_price,
-                                image: p.image,
-                                inStock: p.in_stock,
-                                category: p.category,
-                                badges: p.badges ? p.badges.map(text => ({ type: 'stock', text })) : [],
-                                specifications: p.specifications || []
-                            }));
-                            displayPage(1);
-                        });
+                    // Reset to cached products
+                    allProducts = [...cachedProducts];
+                    displayPage(1);
                 }
             }
         });
