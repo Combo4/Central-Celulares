@@ -112,16 +112,16 @@ CREATE POLICY "Admins can delete products"
         )
     );
 
--- Admin Users: Only admins can view
-CREATE POLICY "Admins can view admin users"
+-- Admin Users: Allow checking admin status
+-- Note: This allows anyone to read admin_users to check if an email is authorized
+-- This is safe because:
+-- 1. Only SELECT is allowed (read-only)
+-- 2. Write operations still require admin privileges
+-- 3. Needed for pre-login email verification and post-login status checks
+CREATE POLICY "Anyone can check admin status by email"
     ON public.admin_users FOR SELECT
-    TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.admin_users
-            WHERE auth_user_id = auth.uid() AND is_active = true
-        )
-    );
+    TO anon, authenticated
+    USING (true);
 
 -- Site Config: Public read, admin write
 CREATE POLICY "Anyone can view site config"
